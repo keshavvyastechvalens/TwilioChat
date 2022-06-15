@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class SignUpForm extends Component {
   constructor() {
@@ -32,7 +33,14 @@ class SignUpForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
     console.log("The form was submitted with the following data:");
+    axios.post("http://localhost:8989/chat/registeruser",this.state)
+        .then(response=>{
+          console.log(response)
+        })
+
     console.log(this.state);
+    
+
     this.setState([])
   }
 

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { BsFacebook, BsInstagram, BsGithub } from "react-icons/bs";
 import './sign.style.css';
+import axios from "axios";
+
 class SignInForm extends Component {
   constructor() {
     super();
@@ -30,6 +32,11 @@ class SignInForm extends Component {
 
     console.log("The form was submitted with the following data:");
     console.log(this.state);
+    axios
+      .post("http://localhost:8989/chat/login", this.state)
+      .then((response) => {
+        console.log(response);
+      });
   }
 
   render() {
