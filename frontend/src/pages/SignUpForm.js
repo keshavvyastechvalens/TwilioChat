@@ -9,6 +9,7 @@ class SignUpForm extends Component {
       email: "",
       password: "",
       name: "",
+      lname: "",
       Phone: "",
       username:"",
       hasAgreed: false
@@ -41,15 +42,31 @@ class SignUpForm extends Component {
         <form onSubmit={this.handleSubmit} className="formFields">
           <div className="formField">
             <label className="formFieldLabel" htmlFor="name">
-              Full Name
+              First Name
             </label>
             <input
               type="text"
               id="name"
               className="formFieldInput"
-              placeholder="Enter your full name"
+              placeholder="Enter your first name"
               name="name"
               value={this.state.name}
+              onChange={this.handleChange}
+              required
+            />
+          </div>
+
+          <div className="formField">
+            <label className="formFieldLabel" htmlFor="lname">
+              Last Name
+            </label>
+            <input
+              type="text"
+              id="lname"
+              className="formFieldInput"
+              placeholder="Enter your last name"
+              name="lname"
+              value={this.state.lname}
               onChange={this.handleChange}
               required
             />
@@ -63,7 +80,7 @@ class SignUpForm extends Component {
               type="text"
               id="username"
               className="formFieldInput"
-              placeholder="Enter your Username"
+              placeholder="Enter your username"
               name="username"
               value={this.state.username}
               onChange={this.handleChange}
