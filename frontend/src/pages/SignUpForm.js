@@ -6,13 +6,13 @@ class SignUpForm extends Component {
     super();
 
     this.state = {
-      email: "",
+      emailId: "",
       password: "",
-      name: "",
-      lname: "",
-      Phone: "",
-      username:"",
-      hasAgreed: false
+      firstName: "",
+      lastName: "",
+      contactNo: "",
+      userName: "",
+      hasAgreed: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,58 +31,60 @@ class SignUpForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
     console.log("The form was submitted with the following data:");
     console.log(this.state);
+    this.setState([])
   }
+
+
 
   render() {
     return (
       <div className="formCenter">
         <form onSubmit={this.handleSubmit} className="formFields">
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="name">
+            <label className="formFieldLabel" htmlFor="firstName">
               First Name
             </label>
             <input
               type="text"
-              id="name"
+              id="firstName"
               className="formFieldInput"
               placeholder="Enter your first name"
-              name="name"
-              value={this.state.name}
+              name="firstName"
+              value={this.state.firstName}
               onChange={this.handleChange}
               required
             />
           </div>
 
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="lname">
+            <label className="formFieldLabel" htmlFor="lastName">
               Last Name
             </label>
             <input
               type="text"
-              id="lname"
+              id="lastName"
               className="formFieldInput"
               placeholder="Enter your last name"
-              name="lname"
-              value={this.state.lname}
+              name="lastName"
+              value={this.state.lastName}
               onChange={this.handleChange}
               required
             />
           </div>
 
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="username">
+            <label className="formFieldLabel" htmlFor="userName">
               Username
             </label>
             <input
               type="text"
-              id="username"
+              id="userName"
               className="formFieldInput"
               placeholder="Enter your username"
-              name="username"
-              value={this.state.username}
+              name="userName"
+              value={this.state.userName}
               onChange={this.handleChange}
               required
             />
@@ -104,32 +106,32 @@ class SignUpForm extends Component {
             />
           </div>
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="email">
+            <label className="formFieldLabel" htmlFor="emailId">
               E-Mail Address
             </label>
             <input
-              type="email"
-              id="email"
+              type="emailId"
+              id="emailId"
               className="formFieldInput"
-              placeholder="Enter your email"
-              name="email"
-              value={this.state.email}
+              placeholder="Enter your emailId"
+              name="emailId"
+              value={this.state.emailId}
               onChange={this.handleChange}
               required
             />
           </div>
 
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="Phone">
+            <label className="formFieldLabel" htmlFor="contactNo">
               Phone
             </label>
             <input
               type="text"
-              id="phone"
+              id="contactNo"
               className="formFieldInput"
               placeholder="Enter your number"
-              name="Phone"
-              value={this.state.Phone}
+              name="contactNo"
+              value={this.state.contactNo}
               onChange={this.handleChange}
               required
             />
