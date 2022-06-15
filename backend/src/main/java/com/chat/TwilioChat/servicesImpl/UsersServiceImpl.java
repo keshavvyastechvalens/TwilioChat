@@ -1,22 +1,15 @@
 package com.chat.TwilioChat.servicesImpl;
 
-<<<<<<< HEAD
 import java.util.Date;
 
-=======
 import org.modelmapper.ModelMapper;
->>>>>>> c1acb30e4512bd727109b20ca333516b52f615cd
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-<<<<<<< HEAD
 import com.chat.TwilioChat.model.Token;
 import com.chat.TwilioChat.model.Users;
 import com.chat.TwilioChat.repository.TokenRepository;
-=======
-import com.chat.TwilioChat.model.Users;
->>>>>>> c1acb30e4512bd727109b20ca333516b52f615cd
 import com.chat.TwilioChat.repository.UsersRepository;
 import com.chat.TwilioChat.requestdto.LoginDto;
 import com.chat.TwilioChat.requestdto.RegisterDto;
@@ -25,7 +18,7 @@ import com.chat.TwilioChat.response.RestResponse;
 import com.chat.TwilioChat.response.StatusCode;
 import com.chat.TwilioChat.returnDto.LoginReturnDto;
 import com.chat.TwilioChat.services.UsersService;
-<<<<<<< HEAD
+import com.chat.TwilioChat.util.AlreadyExistException;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -36,24 +29,18 @@ public class UsersServiceImpl implements UsersService {
 	
 	@Autowired
 	TokenRepository tokenRepository;
-	
-	
-	@Autowired
-	UsersRepository userRepository ;
-	
-	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
-=======
-import com.chat.TwilioChat.util.AlreadyExistException;
-@Service
-public class UsersServiceImpl implements UsersService {
+
 	@Autowired
     ModelMapper modelMapper;
+
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+
 @Autowired
 UsersRepository usersRepository;
->>>>>>> c1acb30e4512bd727109b20ca333516b52f615cd
+
+
+
 
 	@Override
 	public RestResponse registerUser(RegisterDto registerDto) throws AlreadyExistException{
@@ -88,10 +75,10 @@ UsersRepository usersRepository;
 		 	
 	
 		 	
-		 	user = userRepository.findByUserNameIgnoreCase(loginDto.getUserName());
+		 	user = usersRepository.findByUserNameIgnoreCase(loginDto.getUserName());
 	        if(user==null)
 	        {
-	        	user = userRepository.findByEmailIgnoreCase(loginDto.getUserName());
+	        	user = usersRepository.findByEmailIgnoreCase(loginDto.getUserName());
 	        	if(user==null)
 	        			return new DataResponse(StatusCode.INVALID_CREDENTIALS_STATUS, "USER_NOT_FOUND", null);
 	        }
