@@ -1,5 +1,4 @@
-
-package com.demo.todo.util;
+package com.chat.TwilioChat.util;
 
 public class AlreadyExistException extends Exception {
 

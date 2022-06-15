@@ -1,4 +1,4 @@
-package com.demo.todo.util;
+package com.chat.TwilioChat.util;
 
 public class HandleUserException extends Exception {
 	public HandleUserException() {
