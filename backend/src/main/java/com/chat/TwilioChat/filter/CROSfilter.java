@@ -1,5 +1,7 @@
 package com.chat.TwilioChat.filter;
 import java.io.IOException;
+import java.util.Optional;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -35,22 +37,25 @@ public class CROSfilter implements Filter{
 		response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
 		response.setHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept, Authorization, type");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
-		response.addIntHeader("Access-Control-Max-Age", 180);		
+		response.addIntHeader("Access-Control-Max-Age", 180);	
+		System.out.println("--------------------------");
+
 		try 
 		{
 			HttpServletRequest httpRequest = (HttpServletRequest)req;
 			if(httpRequest.getHeader("Authorization")==null)
 			{
+				System.out.println("--------------------------");
 				chain.doFilter(req, res);
 			}
 			else
 			{
 				String id = Jwts.parser().setSigningKey("MustBeUniqueEverwhere").parseClaimsJws(httpRequest.getHeader("Authorization")).getBody().getSubject();				
 				long userId = Long.parseLong(id);
-//				Users u = usersRepository.findById(userId);
-				Users u = null;
+				Optional<Users> u = usersRepository.findById(userId);
+			
 				System.out.println(id+"+++++++++++++++++++++++++++++++++++++++++++++++++++");
-				if(u==null)
+				if(!u.isPresent())
 				{
 					throw new IOException("USER NOT FOUND");
 				}
