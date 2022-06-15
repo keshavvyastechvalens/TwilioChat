@@ -2,21 +2,26 @@ package com.chat.TwilioChat.filter;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.chat.TwilioChat.model.Users;
+import com.chat.TwilioChat.repository.UsersRepository;
+
+import io.jsonwebtoken.Jwts;
 
 @Component
 public class CROSfilter implements Filter{
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		
-	}
+
 	
-	/*
 	@Autowired
 	UsersRepository usersRepository;
 	
@@ -42,7 +47,8 @@ public class CROSfilter implements Filter{
 			{
 				String id = Jwts.parser().setSigningKey("MustBeUniqueEverwhere").parseClaimsJws(httpRequest.getHeader("Authorization")).getBody().getSubject();				
 				long userId = Long.parseLong(id);
-				Users u = usersRepository.findById(userId);
+//				Users u = usersRepository.findById(userId);
+				Users u = null;
 				System.out.println(id+"+++++++++++++++++++++++++++++++++++++++++++++++++++");
 				if(u==null)
 				{
@@ -62,7 +68,7 @@ public class CROSfilter implements Filter{
 	}
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-	}*/
+	}
 
 }
 
