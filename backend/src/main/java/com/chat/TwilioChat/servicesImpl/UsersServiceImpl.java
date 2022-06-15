@@ -78,7 +78,7 @@ UsersRepository usersRepository;
 		 	user = usersRepository.findByUserNameIgnoreCase(loginDto.getUserName());
 	        if(user==null)
 	        {
-	        	user = usersRepository.findByEmailIgnoreCase(loginDto.getUserName());
+	        	user = usersRepository.findByEmailIdIgnoreCase(loginDto.getUserName());
 	        	if(user==null)
 	        			return new DataResponse(StatusCode.INVALID_CREDENTIALS_STATUS, "USER_NOT_FOUND", null);
 	        }

@@ -5,6 +5,8 @@ public class LoginReturnDto {
 	
 	private String name;
 	private String token;
+	
+	
 	public String getName() {
 		return name;
 	}
