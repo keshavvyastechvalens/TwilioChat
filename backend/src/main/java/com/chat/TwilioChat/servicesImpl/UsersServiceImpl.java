@@ -11,7 +11,8 @@ public class UsersServiceImpl implements UsersService {
 
 	@Override
 	public RestResponse registerUser(RegisterDto registerDto) {
-		// TODO Auto-generated method stub
+		
+
 		return null;
 	}
 
