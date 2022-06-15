@@ -9,7 +9,7 @@ class SignUpForm extends Component {
       email: "",
       password: "",
       name: "",
-      phone: "",
+      Phone: "",
       username:"",
       hasAgreed: false
     };
@@ -103,16 +103,16 @@ class SignUpForm extends Component {
           </div>
 
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="email">
+            <label className="formFieldLabel" htmlFor="Phone">
               Phone
             </label>
             <input
-              type="number"
+              type="text"
               id="phone"
               className="formFieldInput"
               placeholder="Enter your number"
               name="Phone"
-              value={this.state.phone}
+              value={this.state.Phone}
               onChange={this.handleChange}
               required
             />
