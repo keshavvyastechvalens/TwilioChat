@@ -66,7 +66,7 @@ class SignUpForm extends Component {
               className="formFieldInput"
               placeholder="Enter your last name"
               name="lname"
-              value={this.state.name}
+              value={this.state.lname}
               onChange={this.handleChange}
               required
             />
