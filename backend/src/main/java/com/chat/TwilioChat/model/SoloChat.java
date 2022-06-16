@@ -98,5 +98,10 @@ public class SoloChat {
 	}
 
 	
-	
+	@Override
+	public String toString() {
+		return "SoloChat [conversationId=" + conversationId + ", id=" + id + ", receiver=" + receiver
+				+ ", receiverParticipantId=" + receiverParticipantId + ", sender=" + sender + ", senderParticipantId="
+				+ senderParticipantId + "]";
+	}
 }

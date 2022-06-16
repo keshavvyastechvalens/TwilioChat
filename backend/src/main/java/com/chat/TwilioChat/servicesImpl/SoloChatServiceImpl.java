@@ -13,6 +13,7 @@ import com.chat.TwilioChat.repository.UsersRepository;
 import com.chat.TwilioChat.response.DataResponse;
 import com.chat.TwilioChat.response.RestResponse;
 import com.chat.TwilioChat.services.SoloChatService;
+import com.chat.TwilioChat.util.NoUserExistException;
 import com.twilio.Twilio;
 import com.twilio.rest.conversations.v1.Conversation;
 import com.twilio.rest.conversations.v1.conversation.Participant;
@@ -33,37 +34,49 @@ private String acc_sid;
 	private String auth_token;
 
 	@Override
-	public RestResponse createConversation(long senderUserId, long receiverUserId) {
-		Twilio.init(acc_sid,auth_token);
+	public RestResponse createConversation(long senderUserId, long receiverUserId) throws NoUserExistException{
+			Twilio.init(acc_sid,auth_token);
 		Optional<Users> senderCheck = usersRepository.findById(senderUserId);
 		Optional<Users> receiverCheck = usersRepository.findById(receiverUserId);
+
+		if(!senderCheck.isPresent()){
+			throw new NoUserExistException("Sender Not Found");
+		}
+
+		if(!receiverCheck.isPresent()){
+			throw new NoUserExistException("Receiver Not Found");
+		}
+
 		Users sender = senderCheck.get();
 		
 		Users receiver = receiverCheck.get();
 		
 		//here condition for alredy existing convo should be given
-		
-		String convoName = sender.getFirstName()+"-"+receiver.getFirstName();
-		Conversation conversation = Conversation.creator().setFriendlyName(convoName).create();
-		Participant senderParticipant = Participant.creator(conversation.getSid()).setIdentity(sender.getUserName())
-				.create();
-		Participant receiverParticipant = Participant.creator(conversation.getSid()).setIdentity(receiver.getUserName())
-				.create();
+		SoloChat conversationExistCheck = soloChatRepository.findBySenderIdAndReceiverId(sender.getId(),receiver.getId());
+		if(conversationExistCheck!=null){
+			return new DataResponse(409, "CONVERSATION ALREADY EXIST !", conversationExistCheck);
+		}else{
+			String convoName = sender.getFirstName()+"-"+receiver.getFirstName();
+			Conversation conversation = Conversation.creator().setFriendlyName(convoName).create();
+			Participant senderParticipant = Participant.creator(conversation.getSid()).setIdentity(sender.getUserName())
+					.create();
+			Participant receiverParticipant = Participant.creator(conversation.getSid()).setIdentity(receiver.getUserName())
+					.create();
+				
+			SoloChat soloChat = new SoloChat();
 			
-		SoloChat soloChat = new SoloChat();
+			soloChat.setSender(sender);
+			
+			soloChat.setReceiver(receiver);
+			soloChat.setConversationId(conversation.getSid());
 		
-		soloChat.setSender(sender);
-		
-		soloChat.setReceiver(receiver);
-		soloChat.setConversationId(conversation.getSid());
-	
-		soloChat.setSenderParticipantId(senderParticipant.getSid());
-		soloChat.setReceiverParticipantId(receiverParticipant.getSid());
-		SoloChat returnSoloChatObj = soloChatRepository.save(soloChat);
-		
-		return (new DataResponse(200,"CONVERSATION CREATED",returnSoloChatObj));
-		
-		
+			soloChat.setSenderParticipantId(senderParticipant.getSid());
+			soloChat.setReceiverParticipantId(receiverParticipant.getSid());
+			SoloChat returnSoloChatObj = soloChatRepository.save(soloChat);
+			
+			return (new DataResponse(200,"CONVERSATION CREATED",returnSoloChatObj));
+			
 	}
+}
 
 }

@@ -5,7 +5,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.BindingResultUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +26,6 @@ public class UsersController {
 
 	@PostMapping("/registeruser")  
 	public RestResponse registerUser(@Valid @RequestBody RegisterDto registerDto, BindingResult result) {
-		System.out.println("---------------");
 		try {
 			if (result.getAllErrors() != null && !result.getAllErrors().isEmpty()){
                     

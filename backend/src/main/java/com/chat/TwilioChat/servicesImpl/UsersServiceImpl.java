@@ -45,7 +45,6 @@ UsersRepository usersRepository;
 
 	@Override
 	public RestResponse registerUser(RegisterDto registerDto) throws AlreadyExistException{
-		try {
             Users u2 = null;
             u2 = this.findByUserName(registerDto.getUserName());
             if (u2 != null) {
@@ -62,10 +61,6 @@ UsersRepository usersRepository;
             u.setPassword(bCryptPasswordEncoder.encode(registerDto.getPassword()));
             usersRepository.save(u);
             return new DataResponse(200, "User Created Successfully !", null);
-
-        } catch (Exception e) {
-            return new DataResponse(500, "Server Error", null);
-        }
 	}
 
 	@Override
