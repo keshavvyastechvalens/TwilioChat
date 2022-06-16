@@ -17,6 +17,7 @@ import com.chat.TwilioChat.requestdto.RegisterDto;
 import com.chat.TwilioChat.response.DataResponse;
 import com.chat.TwilioChat.response.RestResponse;
 import com.chat.TwilioChat.services.UsersService;
+import com.chat.TwilioChat.util.AlreadyExistException;
 
 @RestController
 @RequestMapping("/chat")
@@ -25,7 +26,7 @@ public class UsersController {
 	@Autowired
 	UsersService usersService;
 
-	@PostMapping("/registeruser")
+	@PostMapping("/registeruser")  
 	public RestResponse registerUser(@Valid @RequestBody RegisterDto registerDto, BindingResult result) {
 		
 		try {
@@ -34,7 +35,9 @@ public class UsersController {
 				return new DataResponse(400, result.getAllErrors().get(0).getDefaultMessage(), null);
 			}
 			return usersService.registerUser(registerDto);
-		} catch (Exception e) {
+		} catch (AlreadyExistException e) {
+			return new DataResponse(409, e.getMessage(), null);
+		}catch (Exception e) {
 			return new DataResponse(500, e.getMessage(), null);
 		}
 	}
