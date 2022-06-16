@@ -1,8 +1,11 @@
-import RoutePath from "./RoutePath/RoutePath";
+import Dashboard from './pages/mainPage/Dashboard'
+
+// import RoutePath from "./RoutePath/RoutePath";
 function App() {
   return (
     <div>
-      <RoutePath />
+      {/* <RoutePath /> */}
+      <Dashboard />
     </div>
   );
 }
