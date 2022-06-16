@@ -32,7 +32,7 @@ const handleSubmit=(event) =>{
               E-Mail Address
             </label>
             <input
-              type="email"
+              type="text"
               id="email"
               className="formFieldInput"
               placeholder="Enter your email"

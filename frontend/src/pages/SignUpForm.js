@@ -9,7 +9,7 @@ const SignUpForm = () => {
     const[ firstNameH,setfirstName] =useState("");
     const[lastNameH,setlastName] =useState("");
     const[contactNoH,setContactNo] =useState("");
-    const[hasAgreedH,sethasAgreed] =useState(false);
+    const[hasAgreedH,sethasAgreed] =useState(true);
     const [userNameH, setUserName] = useState('');
 
     
