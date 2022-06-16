@@ -1,48 +1,32 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import { BsFacebook, BsInstagram, BsGithub } from "react-icons/bs";
 import './sign.style.css';
 import axios from "axios";
 
-class SignInForm extends Component {
-  constructor() {
-    super();
+const  SignInForm = () =>
+{
+ const [emailId,setEmail]= useState('');
+ const [passwordId,setPassword]= useState('');
+ 
 
-    this.state = {
-      email: "",
-      password: ""
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    let target = event.target;
-    let value = target.type === "checkbox" ? target.checked : target.value;
-    let name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-  handleSubmit(event) {
+const handleSubmit=(event) =>{
     event.preventDefault();
-
     console.log("The form was submitted with the following data:");
-    console.log(this.state);
+    const user={
+      email: emailId,
+      password: passwordId
+    }
+    console.log(user);
     axios
-      .post("http://localhost:8989/chat/login", this.state)
+      .post("http://localhost:8989/chat/login", user)
       .then((response) => {
         console.log(response);
       });
   }
-
-  render() {
     return (
       <div className="formCenter">
-        <form className="formFields" onSubmit={this.handleSubmit}>
+        <form className="formFields" onSubmit={handleSubmit}>
           <div className="formField">
             <label className="formFieldLabel" htmlFor="email">
               E-Mail Address
@@ -53,8 +37,8 @@ class SignInForm extends Component {
               className="formFieldInput"
               placeholder="Enter your email"
               name="email"
-              value={this.state.email}
-              onChange={this.handleChange}
+              value={emailId}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -69,14 +53,14 @@ class SignInForm extends Component {
               className="formFieldInput"
               placeholder="Enter your password"
               name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
+              value={passwordId}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
 
           <div className="formField">
-            <button className="formFieldButton">Sign In</button>{" "}
+            <button className="formFieldButton" type='submit'>Sign In</button>{" "}
             <Link to="/" className="formFieldLink">
               Create an account
             </Link>
@@ -108,7 +92,7 @@ class SignInForm extends Component {
         </form>
       </div>
     );
-  }
+
 }
 
 export default SignInForm;
