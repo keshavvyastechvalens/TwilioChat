@@ -21,14 +21,13 @@ import com.chat.TwilioChat.util.AlreadyExistException;
 
 @RestController
 @RequestMapping("/chat")
-public class UsersController {
-
+public class UsersController {	
 	@Autowired
 	UsersService usersService;
 
 	@PostMapping("/registeruser")  
 	public RestResponse registerUser(@Valid @RequestBody RegisterDto registerDto, BindingResult result) {
-		
+		System.out.println("---------------");
 		try {
 			if (result.getAllErrors() != null && !result.getAllErrors().isEmpty()){
                     
