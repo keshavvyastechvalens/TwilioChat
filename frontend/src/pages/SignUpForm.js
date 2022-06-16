@@ -1,89 +1,85 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
-class SignUpForm extends Component {
-  constructor() {
-    super();
+const SignUpForm = () => {
+  
+    const[emailIdH,setEmailId] =useState("");
+    const[passwordIdH,setPasswordId] =useState("");
+    const[ firstNameH,setfirstName] =useState("");
+    const[lastNameH,setlastName] =useState("");
+    const[contactNoH,setContactNo] =useState("");
+    const[hasAgreedH,sethasAgreed] =useState(true);
+    const [userNameH, setUserName] = useState('');
 
-    this.state = {
-      email: "",
-      password: "",
-      name: "",
-      lname: "",
-      Phone: "",
-      username:"",
-      hasAgreed: false
-    };
+    
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    let target = event.target;
-    let value = target.type === "checkbox" ? target.checked : target.value;
-    let name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-
+  const handleSubmit=(event) =>{
+    event.preventDefault();
     console.log("The form was submitted with the following data:");
-    console.log(this.state);
+    const user = {
+      firstName: firstNameH,
+      lastName: lastNameH,
+      emailId: emailIdH,
+      contactNo: contactNoH,
+      hasAgreed: hasAgreedH,
+      password: passwordIdH,
+    };
+    console.log(user);
+    axios
+      .post("http://localhost:8989/chat/registeruser", user)
+      .then((response) => {
+        console.log(response);
+      });
   }
 
-  render() {
     return (
       <div className="formCenter">
-        <form onSubmit={this.handleSubmit} className="formFields">
+        <form onSubmit={handleSubmit} className="formFields">
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="name">
+            <label className="formFieldLabel" htmlFor="firstName">
               First Name
             </label>
             <input
               type="text"
-              id="name"
+              id="firstName"
               className="formFieldInput"
               placeholder="Enter your first name"
-              name="name"
-              value={this.state.name}
-              onChange={this.handleChange}
+              name="firstName"
+              value={firstNameH}
+              onChange={(e) => setfirstName(e.target.value)}
               required
             />
           </div>
 
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="lname">
+            <label className="formFieldLabel" htmlFor="lastName">
               Last Name
             </label>
             <input
               type="text"
-              id="lname"
+              id="lastName"
               className="formFieldInput"
               placeholder="Enter your last name"
-              name="lname"
-              value={this.state.lname}
-              onChange={this.handleChange}
+              name="lastName"
+              value={lastNameH}
+              onChange={(e) => setlastName(e.target.value)}
               required
             />
           </div>
 
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="username">
+            <label className="formFieldLabel" htmlFor="userName">
               Username
             </label>
             <input
               type="text"
-              id="username"
+              id="userName"
               className="formFieldInput"
               placeholder="Enter your username"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleChange}
+              name="userName"
+              value={userNameH}
+              onChange={(e) => setUserName(e.target.value)}
               required
             />
           </div>
@@ -98,39 +94,39 @@ class SignUpForm extends Component {
               className="formFieldInput"
               placeholder="Enter your password"
               name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
+              value={passwordIdH}
+              onChange={(e) => setPasswordId(e.target.value)}
               required
             />
           </div>
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="email">
+            <label className="formFieldLabel" htmlFor="emailId">
               E-Mail Address
             </label>
             <input
-              type="email"
-              id="email"
+              type="emailId"
+              id="emailId"
               className="formFieldInput"
-              placeholder="Enter your email"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleChange}
+              placeholder="Enter your emailId"
+              name="emailId"
+              value={emailIdH}
+              onChange={(e) => setEmailId(e.target.value)}
               required
             />
           </div>
 
           <div className="formField">
-            <label className="formFieldLabel" htmlFor="Phone">
+            <label className="formFieldLabel" htmlFor="contactNo">
               Phone
             </label>
             <input
               type="text"
-              id="phone"
+              id="contactNo"
               className="formFieldInput"
               placeholder="Enter your number"
-              name="Phone"
-              value={this.state.Phone}
-              onChange={this.handleChange}
+              name="contactNo"
+              value={contactNoH}
+              onChange={(e) => setContactNo(e.target.value)}
               required
             />
           </div>
@@ -141,8 +137,8 @@ class SignUpForm extends Component {
                 className="formFieldCheckbox"
                 type="checkbox"
                 name="hasAgreed"
-                value={this.state.hasAgreed}
-                onChange={this.handleChange}
+                value={hasAgreedH}
+                onChange={(e) => sethasAgreed(e.target.value)}
                 required
               />{" "}
               I agree all statements in{" "}
@@ -161,6 +157,6 @@ class SignUpForm extends Component {
         </form>
       </div>
     );
-  }
+  
 }
 export default SignUpForm;
