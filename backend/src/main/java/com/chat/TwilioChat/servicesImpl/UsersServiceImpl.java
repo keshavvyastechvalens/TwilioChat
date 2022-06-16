@@ -1,6 +1,7 @@
 package com.chat.TwilioChat.servicesImpl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,12 @@ UsersRepository usersRepository;
 	        loginReturnDto.setName(user.getFirstName()+" "+user.getLastName());
 	        loginReturnDto.setUserName(user.getUserName());
 	        loginReturnDto.setToken(token.getUserToken());
+	        
+	        List<Users> usersList = usersRepository.findAll();
+	        
+	        usersList.remove(user);
+	        loginReturnDto.setUserList(usersList);
+	        
 	        return new DataResponse(StatusCode.SUCCESS, "LOGIN_SUCESSFULLY", loginReturnDto);
 	}
 
@@ -97,10 +104,11 @@ UsersRepository usersRepository;
 	private String getToken(long id) {
 		   
 		String userId = ""+id;
+
 		String token = Jwts.builder()
 		                .setSubject(userId)
 		                .setExpiration(new Date(System.currentTimeMillis() + 864_000_000))
-		                .signWith(SignatureAlgorithm.HS512, "MustBeUniqueEverwhere")
+		                .signWith(SignatureAlgorithm.HS256, "MustBeUniqueEverwhereinuhgkjhgjkhgkjyygjuygwholeprogram")
 		                .compact();
 		        return token;
 	}
