@@ -50,7 +50,7 @@ public class CROSfilter implements Filter{
 			}
 			else
 			{
-				String id = Jwts.parser().setSigningKey("SecretKeyToGenJWTsSecretKeyToGenJWTsSecretKeyToGenJWTs").parseClaimsJws(httpRequest.getHeader("Authorization")).getBody().getSubject();				
+				String id = Jwts.parser().setSigningKey("MustBeUniqueEverwhere").parseClaimsJws(httpRequest.getHeader("Authorization")).getBody().getSubject();				
 				long userId = Long.parseLong(id);
 				Optional<Users> u = usersRepository.findById(userId);
 			
