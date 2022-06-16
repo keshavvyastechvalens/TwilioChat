@@ -20,7 +20,7 @@ import com.chat.TwilioChat.services.UsersService;
 import com.chat.TwilioChat.util.AlreadyExistException;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/user")
 public class UsersController {	
 	@Autowired
 	UsersService usersService;
