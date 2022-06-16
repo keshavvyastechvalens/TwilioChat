@@ -1,9 +1,9 @@
 package com.chat.TwilioChat.services;
-
 import com.chat.TwilioChat.response.RestResponse;
+import com.chat.TwilioChat.util.NoUserExistException;
 
 public interface SoloChatService {
 
-	RestResponse createConversation(long senderUserId, long receiverUserId);
+	RestResponse createConversation(long senderUserId, long receiverUserId) throws NoUserExistException;
 
 }

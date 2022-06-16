@@ -53,8 +53,7 @@ public class CROSfilter implements Filter{
 				String id = Jwts.parser().setSigningKey("SecretKeyToGenJWTsSecretKeyToGenJWTsSecretKeyToGenJWTs").parseClaimsJws(httpRequest.getHeader("Authorization")).getBody().getSubject();				
 				long userId = Long.parseLong(id);
 				Optional<Users> u = usersRepository.findById(userId);
-			
-				System.out.println(id+"+++++++++++++++++++++++++++++++++++++++++++++++++++");
+		
 				if(!u.isPresent())
 				{
 					throw new IOException("USER NOT FOUND");
