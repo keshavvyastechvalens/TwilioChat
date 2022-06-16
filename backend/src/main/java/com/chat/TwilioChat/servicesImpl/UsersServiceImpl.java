@@ -71,9 +71,6 @@ UsersRepository usersRepository;
 	public RestResponse login(LoginDto loginDto) {
 		 Users user = null; 
 		 
-		 	String[ ] requestArray = {"userName","password"};
-		 	
-	
 		 	
 		 	user = usersRepository.findByUserNameIgnoreCase(loginDto.getUserName());
 	        if(user==null)
