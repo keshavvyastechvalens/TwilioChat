@@ -100,12 +100,12 @@ UsersRepository usersRepository;
 	private String getToken(long id) {
 		   
 		String userId = ""+id;
-		String token = Jwts.builder()
-		                .setSubject(userId)
-		                .setExpiration(new Date(System.currentTimeMillis() + 864_000_000))
-		                .signWith(SignatureAlgorithm.HS512, "MustBeUniqueEverwhere")
-		                .compact();
-		        return token;
+		return (Jwts.builder()
+		.setSubject(userId)
+		.setExpiration(new Date(System.currentTimeMillis() + 86400000))
+		.signWith(SignatureAlgorithm.HS256, "SecretKeyToGenJWTsSecretKeyToGenJWTsSecretKeyToGenJWTs")
+		.compact());
+		        
 	}
 	
 	@Override
