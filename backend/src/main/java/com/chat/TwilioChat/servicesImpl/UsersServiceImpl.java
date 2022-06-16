@@ -1,6 +1,7 @@
 package com.chat.TwilioChat.servicesImpl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,9 +72,6 @@ UsersRepository usersRepository;
 	public RestResponse login(LoginDto loginDto) {
 		 Users user = null; 
 		 
-		 	String[ ] requestArray = {"userName","password"};
-		 	
-	
 		 	
 		 	user = usersRepository.findByUserNameIgnoreCase(loginDto.getUserName());
 	        if(user==null)
@@ -93,6 +91,12 @@ UsersRepository usersRepository;
 	        loginReturnDto.setName(user.getFirstName()+" "+user.getLastName());
 	        loginReturnDto.setUserName(user.getUserName());
 	        loginReturnDto.setToken(token.getUserToken());
+	        
+	        List<Users> usersList = usersRepository.findAll();
+	        
+	        usersList.remove(user);
+	        loginReturnDto.setUserList(usersList);
+	        
 	        return new DataResponse(StatusCode.SUCCESS, "LOGIN_SUCESSFULLY", loginReturnDto);
 	}
 
