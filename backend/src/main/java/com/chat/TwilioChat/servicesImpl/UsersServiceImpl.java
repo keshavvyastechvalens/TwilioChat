@@ -90,7 +90,8 @@ UsersRepository usersRepository;
 	        token.setUserToken(this.getToken(user.getId()));
 	        tokenRepository.save(token);
 	        LoginReturnDto loginReturnDto = new LoginReturnDto();
-	        loginReturnDto.setName(user.getUserName());
+	        loginReturnDto.setName(user.getFirstName()+" "+user.getLastName());
+	        loginReturnDto.setUserName(user.getUserName());
 	        loginReturnDto.setToken(token.getUserToken());
 	        return new DataResponse(StatusCode.SUCCESS, "LOGIN_SUCESSFULLY", loginReturnDto);
 	}
