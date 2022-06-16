@@ -3,12 +3,13 @@ import { Routes, Route, Link } from "react-router-dom";
 import SignUpForm from "../pages/SignUpForm"
 import SignInForm from "../pages/SignInForm";
 import "../App.css";
+import Dashboard from '../pages/mainPage/Dashboard';
 
 function RoutePath() {
   return (
     <div>
       <div className="App">
-        <div className="appAside" />
+        {/* <div className="appAside" />
         <div className="appForm">
           <div className="pageSwitcher">
             <Link
@@ -41,11 +42,9 @@ function RoutePath() {
             </Link>
           </div>
 
-          <Routes>
-            <Route path="/" element={<SignUpForm />} />
-            <Route path="sign-in" element={<SignInForm />} />
-          </Routes>
-        </div>
+           
+        </div> */}
+        <Dashboard/>
       </div>
     </div>
   );
