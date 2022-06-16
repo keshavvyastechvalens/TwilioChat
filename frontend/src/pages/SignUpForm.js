@@ -1,55 +1,41 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-class SignUpForm extends Component {
-  constructor() {
-    super();
+const SignUpForm = () => {
+  
+    const[emailIdH,setEmailId] =useState("");
+    const[passwordIdH,setPasswordId] =useState("");
+    const[ firstNameH,setfirstName] =useState("");
+    const[lastNameH,setlastName] =useState("");
+    const[contactNoH,setContactNo] =useState("");
+    const[hasAgreedH,sethasAgreed] =useState(false);
+    const [userNameH, setUserName] = useState('');
 
-    this.state = {
-      emailId: "",
-      password: "",
-      firstName: "",
-      lastName: "",
-      contactNo: "",
-      userName: "",
-      hasAgreed: false,
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    let target = event.target;
-    let value = target.type === "checkbox" ? target.checked : target.value;
-    let name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    console.log("The form was submitted with the following data:");
-    axios.post("http://localhost:8989/chat/registeruser",this.state)
-        .then(response=>{
-          console.log(response)
-        })
-
-    console.log(this.state);
     
 
-    this.setState([])
+  const handleSubmit=(event) =>{
+    event.preventDefault();
+    console.log("The form was submitted with the following data:");
+    const user = {
+      firstName: firstNameH,
+      lastName: lastNameH,
+      emailId: emailIdH,
+      contactNo: contactNoH,
+      hasAgreed: hasAgreedH,
+      password: passwordIdH,
+    };
+    console.log(user);
+    axios
+      .post("http://localhost:8989/chat/registeruser", user)
+      .then((response) => {
+        console.log(response);
+      });
   }
 
-
-
-  render() {
     return (
       <div className="formCenter">
-        <form onSubmit={this.handleSubmit} className="formFields">
+        <form onSubmit={handleSubmit} className="formFields">
           <div className="formField">
             <label className="formFieldLabel" htmlFor="firstName">
               First Name
@@ -60,8 +46,8 @@ class SignUpForm extends Component {
               className="formFieldInput"
               placeholder="Enter your first name"
               name="firstName"
-              value={this.state.firstName}
-              onChange={this.handleChange}
+              value={firstNameH}
+              onChange={(e) => setfirstName(e.target.value)}
               required
             />
           </div>
@@ -76,8 +62,8 @@ class SignUpForm extends Component {
               className="formFieldInput"
               placeholder="Enter your last name"
               name="lastName"
-              value={this.state.lastName}
-              onChange={this.handleChange}
+              value={lastNameH}
+              onChange={(e) => setlastName(e.target.value)}
               required
             />
           </div>
@@ -92,8 +78,8 @@ class SignUpForm extends Component {
               className="formFieldInput"
               placeholder="Enter your username"
               name="userName"
-              value={this.state.userName}
-              onChange={this.handleChange}
+              value={userNameH}
+              onChange={(e) => setUserName(e.target.value)}
               required
             />
           </div>
@@ -108,8 +94,8 @@ class SignUpForm extends Component {
               className="formFieldInput"
               placeholder="Enter your password"
               name="password"
-              value={this.state.password}
-              onChange={this.handleChange}
+              value={passwordIdH}
+              onChange={(e) => setPasswordId(e.target.value)}
               required
             />
           </div>
@@ -123,8 +109,8 @@ class SignUpForm extends Component {
               className="formFieldInput"
               placeholder="Enter your emailId"
               name="emailId"
-              value={this.state.emailId}
-              onChange={this.handleChange}
+              value={emailIdH}
+              onChange={(e) => setEmailId(e.target.value)}
               required
             />
           </div>
@@ -139,8 +125,8 @@ class SignUpForm extends Component {
               className="formFieldInput"
               placeholder="Enter your number"
               name="contactNo"
-              value={this.state.contactNo}
-              onChange={this.handleChange}
+              value={contactNoH}
+              onChange={(e) => setContactNo(e.target.value)}
               required
             />
           </div>
@@ -151,8 +137,8 @@ class SignUpForm extends Component {
                 className="formFieldCheckbox"
                 type="checkbox"
                 name="hasAgreed"
-                value={this.state.hasAgreed}
-                onChange={this.handleChange}
+                value={hasAgreedH}
+                onChange={(e) => sethasAgreed(e.target.value)}
                 required
               />{" "}
               I agree all statements in{" "}
@@ -171,6 +157,6 @@ class SignUpForm extends Component {
         </form>
       </div>
     );
-  }
+  
 }
 export default SignUpForm;
