@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +31,36 @@ public class SoloChatController {
 		}catch (Exception e) {
 			return new DataResponse(500, e.getMessage(), null);
 		}
+	}
+	
+	
+	@PostMapping("/sendMessage")
+	public RestResponse sendMessage(@RequestParam("channelSid") String channelSid, HttpServletRequest req)
+	{
+		try {
+			long senderUserId = Long.parseLong(req.getAttribute("id").toString());
+			return soloChatService.sendMessage(channelSid,senderUserId);
+		
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		return null;
+	}
+	
+	
+	
+	
+	
+	@GetMapping("/fetchMessage")
+	public RestResponse fetchMessage(@RequestParam("channelSid") String channelSid,HttpServletRequest req)
+	{
+		long senderUserId = Long.parseLong(req.getAttribute("id").toString());
+		return soloChatService.fetchMessage(channelSid,senderUserId);
+				
+				
+				
+				
 	}
 }

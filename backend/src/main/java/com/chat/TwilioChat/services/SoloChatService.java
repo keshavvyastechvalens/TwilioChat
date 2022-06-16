@@ -6,4 +6,8 @@ public interface SoloChatService {
 
 	RestResponse createConversation(long senderUserId, long receiverUserId) throws NoUserExistException;
 
+	RestResponse sendMessage(String channelSid, long senderUserId);
+
+	RestResponse fetchMessage(String channelSid, long senderUserId);
+
 }
