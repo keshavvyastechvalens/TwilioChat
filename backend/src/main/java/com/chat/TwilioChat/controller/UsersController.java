@@ -19,7 +19,7 @@ import com.chat.TwilioChat.response.RestResponse;
 import com.chat.TwilioChat.services.UsersService;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/user")
 public class UsersController {	
 	@Autowired
 	UsersService usersService;
