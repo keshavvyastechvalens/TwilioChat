@@ -2,6 +2,7 @@ package com.chat.TwilioChat.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ import com.chat.TwilioChat.services.SoloChatService;
 @RestController
 @RequestMapping("/chat")
 public class SoloChatController {
-	
+	@Autowired
 	SoloChatService soloChatService;
 	
 	
