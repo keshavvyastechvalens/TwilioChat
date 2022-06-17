@@ -1,0 +1,36 @@
+$gray: #ecf0f1;
+$light:#fff;
+
+
+
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $gray;  
+    height: 100vh;  
+}
+
+.subdiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 350px;
+    height: auto;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 40px;
+}
+
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.error{
+    color: red;
+}
