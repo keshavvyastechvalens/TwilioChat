@@ -12,5 +12,8 @@ public interface SoloChatRepository extends JpaRepository<SoloChat, Long> {
     SoloChat findBySenderIdAndReceiverId(long id, long id2);
 
 
+	SoloChat findBySenderIdAndConversationId(long senderUserId, String conversationId);
+
+
 	
 }

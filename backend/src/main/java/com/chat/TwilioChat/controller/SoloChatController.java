@@ -64,10 +64,10 @@ public class SoloChatController {
 	
 	
 	@GetMapping("/fetchMessage")
-	public RestResponse fetchMessage(@RequestParam("channelSid") String channelSid,HttpServletRequest req)
+	public RestResponse fetchMessage(@RequestParam("conversationId") String conversationId,HttpServletRequest req)
 	{
 		long senderUserId = Long.parseLong(req.getAttribute("id").toString());
-		return soloChatService.fetchMessage(channelSid,senderUserId);
+		return soloChatService.fetchMessage(conversationId,senderUserId);
 				
 				
 				

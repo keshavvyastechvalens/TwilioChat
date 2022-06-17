@@ -105,9 +105,20 @@ public class SoloChatServiceImpl implements SoloChatService {
 	}
 
 	@Override
-	public RestResponse fetchMessage(String channelSid, long senderUserId) {
+	public RestResponse fetchMessage(String conversationId, long senderUserId) {
 		Twilio.init(acc_sid, auth_token);
-		ResourceSet<Message> messages = Message.reader(channelSid).limit(20).read();
+		
+		SoloChat soloChat = soloChatRepository.findBySenderIdAndConversationId(senderUserId,conversationId);
+		if(soloChat==null)
+		{
+			return new DataResponse(400,"MISMATCH IN CONVERSATION AND SENDER",null);
+		}
+		
+		
+		
+		
+		
+		ResourceSet<Message> messages = Message.reader(conversationId).limit(20).read();
 		ArrayList<Message> listMessages = new ArrayList<>();
 		for(Message record : messages) {
 			listMessages.add(record);
