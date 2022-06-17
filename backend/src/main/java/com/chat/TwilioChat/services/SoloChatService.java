@@ -9,6 +9,6 @@ public interface SoloChatService {
 
 	RestResponse sendMessage(MessageDto messageDto, long senderUserId);
 
-	RestResponse fetchMessage(String channelSid, long senderUserId);
+	RestResponse fetchMessage(String conversationId, long senderUserId);
 
 }
