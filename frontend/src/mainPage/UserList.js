@@ -3,35 +3,39 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Avatar } from '@material-ui/core';
-// import api from '../Axios_instance/Axios_Instance';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
+
 
 
 
 
 export default function UserList(){
     const [userData, setUserData] = useState([])
-
-      
-    // const getData=async()=>
+   
+    const data= useSelector((state)=>state.allProducts.Product)
+    console.log(data);
+    // const storeData=()=>
     // {
-    //   let response= await axios.get("http://localhost:8989/user/login")
-    //   console.log('response',response);
-    //   // setUserData(response.data);
+    //     setUserData(data.allProducts.Product)
+        
     // }
+
     // useEffect(()=>
     // {
-    //   getData()
+    //     storeData()
+        
+           
     // },[])
-
+    
+    // console.log("helloooasdhha",userData);
     
     return<>
-         {userData.map((user) => (
+         {data.map((user) => (
             <ListItem button>
             <ListItemIcon>
             <Avatar alt="Remy Sharp" src="logo.jpg" />
             </ListItemIcon>
-            <ListItemText primary={user.name} />
+            <ListItemText primary={user.firstName} />
             </ListItem>
          ))}
 
