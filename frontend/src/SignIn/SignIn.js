@@ -3,7 +3,7 @@ import React from 'react'
 import './SignIn.scss'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 
@@ -11,6 +11,7 @@ import axios from 'axios'
 
 export default function SignIn() {
 
+  const navigate= useNavigate()
   const initialValues={
    
     userName:'',
@@ -19,10 +20,19 @@ export default function SignIn() {
 }               
 const onSubmit=async values=>{
     
-   console.log(values);
+  //  console.log(values);
    const res = await axios.post("http://localhost:8989/user/login",values);
-   console.log(res);
-        
+   console.log(res.data.data.userList);
+   if(res.data.status===200)
+   {
+    navigate('/dashboard')
+    localStorage.setItem("userData: ",JSON.stringify(res.data.data.userList))
+   }
+   else{
+     alert("Error")
+     
+   }
+  
     
 }
 
