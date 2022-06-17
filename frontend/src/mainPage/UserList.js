@@ -13,25 +13,10 @@ export default function UserList(){
     const [userData, setUserData] = useState([])
    
     const data= useSelector((state)=>state.allProducts.Product)
-    console.log(data);
-    // const storeData=()=>
-    // {
-    //     setUserData(data.allProducts.Product)
-        
-    // }
-
-    // useEffect(()=>
-    // {
-    //     storeData()
-        
-           
-    // },[])
-    
-    // console.log("helloooasdhha",userData);
     
     return<>
          {data.map((user) => (
-            <ListItem button>
+            <ListItem button key={user.id}>
             <ListItemIcon>
             <Avatar alt="Remy Sharp" src="logo.jpg" />
             </ListItemIcon>

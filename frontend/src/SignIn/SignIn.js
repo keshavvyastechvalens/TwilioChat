@@ -27,7 +27,7 @@ const onSubmit=async values=>{
   
   dispatch(setProduct("res.data.data.userList111111"))
    const res = await axios.post("http://localhost:8989/user/login",values);
-   console.log(res.data.data.userList);
+  
    if(res.data.status===200)
    {
     navigate('/dashboard')
