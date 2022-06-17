@@ -4,6 +4,7 @@ import './SignIn.scss'
 import {useFormik} from 'formik'
 import * as Yup from 'yup'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 
 
@@ -16,10 +17,11 @@ export default function SignIn() {
     password:'',
   
 }               
-const onSubmit=values=>{
+const onSubmit=async values=>{
     
    console.log(values);
-        
+   const res = await axios.post("http://localhost:8989/user/login",values);
+   console.log(res);
         
     
 }

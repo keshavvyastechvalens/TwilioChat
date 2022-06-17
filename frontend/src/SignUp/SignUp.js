@@ -14,6 +14,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup'
 import Swal from 'sweetalert2'
 import api from '../Axios_instance/Axios_Instance';
+import axios from 'axios';
 
 
 
@@ -79,10 +80,10 @@ export default function SIgnUp() {
             
         // }
         // )
-        const response= await api.post("localhost:8989/user/registeruser")
-        console.log('response',response);
-
-
+        // const response= await api.post("localhost:8989/user/registeruser")
+        // console.log('response',response);
+        const res = await axios.post("http://localhost:8989/user/registeruser",values);
+      console.log(res);
         Swal.fire(
           'Registration Successful ',
           'You clicked the button!',
