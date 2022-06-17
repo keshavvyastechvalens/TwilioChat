@@ -86,12 +86,23 @@ export default function SIgnUp() {
         // console.log('response',response);
         const res = await axios.post("http://localhost:8989/user/registeruser",values);
           console.log(res);
+          if(res.data.status==200)
+          {
             Swal.fire(
               'Registration Successful ',
               'You clicked the button!',
               'success'
             )
             navigate('/signin')
+          }
+          else
+          {
+            Swal.fire(
+              res.data.message,
+              '',
+              'error'
+            )
+          }
 
             }
        
