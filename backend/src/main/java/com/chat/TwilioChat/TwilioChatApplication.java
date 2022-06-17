@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class})
 public class TwilioChatApplication {
-
+			 
 	public static void main(String[] args) {
 		SpringApplication.run(TwilioChatApplication.class, args);
 	}

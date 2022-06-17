@@ -1,6 +1,7 @@
 package com.chat.TwilioChat.servicesImpl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,16 +45,15 @@ UsersRepository usersRepository;
 
 	@Override
 	public RestResponse registerUser(RegisterDto registerDto) throws AlreadyExistException{
-		try {
             Users u2 = null;
             u2 = this.findByUserName(registerDto.getUserName());
             if (u2 != null) {
-                throw new AlreadyExistException("User Name" + registerDto.getUserName() + " already Exist");
+                throw new AlreadyExistException("UserName " + registerDto.getUserName() + " already Exist");
             }
 
 			u2 = this.findByEmailId(registerDto.getEmailId());
             if (u2 != null) {
-                throw new AlreadyExistException("User Email" + registerDto.getEmailId() + " already Exist");
+                throw new AlreadyExistException("User Email " + registerDto.getEmailId() + " already Exist");
             }
 
             Users u = modelMapper.map(registerDto, Users.class);
@@ -61,19 +61,12 @@ UsersRepository usersRepository;
             u.setPassword(bCryptPasswordEncoder.encode(registerDto.getPassword()));
             usersRepository.save(u);
             return new DataResponse(200, "User Created Successfully !", null);
-
-        } catch (Exception e) {
-            return new DataResponse(500, "Server Error", null);
-        }
 	}
 
 	@Override
 	public RestResponse login(LoginDto loginDto) {
 		 Users user = null; 
 		 
-		 	String[ ] requestArray = {"userName","password"};
-		 	
-	
 		 	
 		 	user = usersRepository.findByUserNameIgnoreCase(loginDto.getUserName());
 	        if(user==null)
@@ -93,6 +86,12 @@ UsersRepository usersRepository;
 	        loginReturnDto.setName(user.getFirstName()+" "+user.getLastName());
 	        loginReturnDto.setUserName(user.getUserName());
 	        loginReturnDto.setToken(token.getUserToken());
+	        
+	        List<Users> usersList = usersRepository.findAll();
+	        
+	        usersList.remove(user);
+	        loginReturnDto.setUserList(usersList);
+	        
 	        return new DataResponse(StatusCode.SUCCESS, "LOGIN_SUCESSFULLY", loginReturnDto);
 	}
 
@@ -100,12 +99,12 @@ UsersRepository usersRepository;
 	private String getToken(long id) {
 		   
 		String userId = ""+id;
-		String token = Jwts.builder()
-		                .setSubject(userId)
-		                .setExpiration(new Date(System.currentTimeMillis() + 864_000_000))
-		                .signWith(SignatureAlgorithm.HS512, "MustBeUniqueEverwhere")
-		                .compact();
-		        return token;
+		return (Jwts.builder()
+		.setSubject(userId)
+		.setExpiration(new Date(System.currentTimeMillis() + 86400000))
+		.signWith(SignatureAlgorithm.HS256, "SecretKeyToGenJWTsSecretKeyToGenJWTsSecretKeyToGenJWTs")
+		.compact());
+		        
 	}
 	
 	@Override
