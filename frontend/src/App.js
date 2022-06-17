@@ -1,15 +1,23 @@
-import Dashboard from './pages/mainPage/Dashboard'
+import logo from './logo.svg';
+import './App.css';
+import SignIn from './SignIn/SignIn'
+import SIgnUp from './SignUp/SignUp';
+import Dashboard from './mainPage/Dashboard';
+import {Routes,Route} from 'react-router-dom'
 
-// import RoutePath from "./RoutePath/RoutePath";
+
 function App() {
-  return (
-    <div>
-      {/* <RoutePath /> */}
-      <Dashboard />
-    </div>
+  return (<>
+
+        <Routes>
+          <Route path='/signup' element={<SIgnUp/>}/>
+          <Route exact path='signin' element={<SignIn/>}/>
+          <Route exact path='dashboard' element={<Dashboard/>}/>
+        </Routes>
+  
+  </>
+    
   );
 }
 
-export default App
-
-
+export default App;

@@ -14,19 +14,16 @@ import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Copyright from './Copyright';
-// import { mainListItems, secondaryListItems } from './ListItems';
-import axios from 'axios';
-import MainListItems from './UserList';
+// import MainListItems from '../pages/UserList';
+
+
 import { TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
+import UserList from './UserList';
 
 
 const drawerWidth = 240;
@@ -163,18 +160,14 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List><MainListItems/></List>
-        {/* <Divider /> */}
-        {/* <List>{secondaryListItems}</List> */}
+        <List><UserList/></List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
             <Grid item xs={12} >
               <Paper style={{height:'80vh', display:'flex', flexDirection:'column-reverse'}} className={fixedHeightPaper}>
-                {/* <div><h1>Chat Box</h1></div> */}
                 <div style={{display:'flex'}}>
                      
                      <TextField
@@ -193,23 +186,6 @@ export default function Dashboard() {
                 </div>
               </Paper>
             </Grid>
-            {/* <Grid item xs={12} >
-              <Paper className={fixedHeightPaper}>
-              <TextField
-                  id="outlined-full-width"
-                  label="Label"
-                  style={{ margin: 8 }}
-                  placeholder="Placeholder"
-                  // helperText="Full width!"
-                  fullWidth
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="outlined"
-                />
-              </Paper>
-            </Grid> */}
           </Grid>
           <Box pt={4}>
             <Copyright />
