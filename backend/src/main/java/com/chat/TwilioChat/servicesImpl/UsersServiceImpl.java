@@ -48,12 +48,12 @@ UsersRepository usersRepository;
             Users u2 = null;
             u2 = this.findByUserName(registerDto.getUserName());
             if (u2 != null) {
-                throw new AlreadyExistException("User Name" + registerDto.getUserName() + " already Exist");
+                throw new AlreadyExistException("UserName " + registerDto.getUserName() + " already Exist");
             }
 
 			u2 = this.findByEmailId(registerDto.getEmailId());
             if (u2 != null) {
-                throw new AlreadyExistException("User Email" + registerDto.getEmailId() + " already Exist");
+                throw new AlreadyExistException("User Email " + registerDto.getEmailId() + " already Exist");
             }
 
             Users u = modelMapper.map(registerDto, Users.class);
