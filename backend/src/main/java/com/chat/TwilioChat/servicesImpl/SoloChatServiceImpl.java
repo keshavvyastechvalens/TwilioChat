@@ -10,6 +10,7 @@ import com.chat.TwilioChat.model.SoloChat;
 import com.chat.TwilioChat.model.Users;
 import com.chat.TwilioChat.repository.SoloChatRepository;
 import com.chat.TwilioChat.repository.UsersRepository;
+import com.chat.TwilioChat.requestdto.MessageDto;
 import com.chat.TwilioChat.response.DataResponse;
 import com.chat.TwilioChat.response.RestResponse;
 import com.chat.TwilioChat.services.SoloChatService;
@@ -98,12 +99,16 @@ public class SoloChatServiceImpl implements SoloChatService {
 	}
 
 	@Override
-	public RestResponse sendMessage(String channelSid, long senderUserId) {
+	public RestResponse sendMessage(MessageDto messageDto, long senderUserId) {
 		Twilio.init(acc_sid, auth_token);
+		System.out.println("1111111111111111111111111"+messageDto);
 		Optional<Users> senderCheck = usersRepository.findById(senderUserId);
+		System.out.println("112222222222222222222222222222222");
 
-		Message message = Message.creator(channelSid).setAuthor(senderCheck.get().getUserName()).setBody("Ahoy there!")
+		Message message = Message.creator(messageDto.getConversationId()).setAuthor(senderCheck.get().getUserName()).setBody(messageDto.getMessageContant())
 				.create();
+		System.out.println("1333333333333333333333333333");
+
 		return new DataResponse(1000, "yoyo", message);
 	}
 
