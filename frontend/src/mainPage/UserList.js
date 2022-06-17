@@ -39,9 +39,9 @@ export default function UserList(){
          {data.map((user) => (
             <ListItem button key={user.id} onClick={()=>getIdOnClick(user)}  >
             <ListItemIcon>
-            <Avatar alt="Remy Sharp" src="logo.jpg" />
+            <Avatar style={{textTransform: 'capitalize'}} alt={user.firstName} src="logo.jpg" />
             </ListItemIcon>
-            <ListItemText primary={user.firstName} />
+            <ListItemText style={{textTransform: 'capitalize'}} primary={user.firstName} />
             </ListItem>
          ))}
 
