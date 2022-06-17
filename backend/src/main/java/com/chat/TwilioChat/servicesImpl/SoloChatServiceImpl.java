@@ -1,5 +1,7 @@
 package com.chat.TwilioChat.servicesImpl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,34 +55,28 @@ public class SoloChatServiceImpl implements SoloChatService {
 		Users sender = senderCheck.get();
 
 		Users receiver = receiverCheck.get();
-		System.out.println("11111111111111111111111111111111");
 		// here condition for alredy existing convo should be given
 		SoloChat conversationExistCheck = soloChatRepository.findBySenderIdAndReceiverId(sender.getId(),
 				receiver.getId());
-		System.out.println("222222222222222222222222");
 
 		if (conversationExistCheck != null) {
 			return new DataResponse(409, "CONVERSATION ALREADY EXIST !", conversationExistCheck);
 		} else {
-			System.out.println("3333333333333333333");
 
 			String convoName = sender.getFirstName() + "-" + receiver.getFirstName();
-			System.out.println("44444444444444444444444");
 			Conversation conversation = null;
 			try {
-				conversation = Conversation.creator().setFriendlyName("kakjhdfahs").create();
+				conversation = Conversation.creator().setFriendlyName(convoName).create();
 
 			} catch (Exception e) {
 				System.out.println(e);
 				e.printStackTrace();
 			}
-			System.out.println("555555555555555555");
 
 			Participant senderParticipant = Participant.creator(conversation.getSid()).setIdentity(sender.getUserName())
 					.create();
 			Participant receiverParticipant = Participant.creator(conversation.getSid())
 					.setIdentity(receiver.getUserName()).create();
-			System.out.println("66666666666666");
 
 			SoloChat soloChat = new SoloChat();
 
@@ -101,13 +97,9 @@ public class SoloChatServiceImpl implements SoloChatService {
 	@Override
 	public RestResponse sendMessage(MessageDto messageDto, long senderUserId) {
 		Twilio.init(acc_sid, auth_token);
-		System.out.println("1111111111111111111111111"+messageDto);
 		Optional<Users> senderCheck = usersRepository.findById(senderUserId);
-		System.out.println("112222222222222222222222222222222");
-
 		Message message = Message.creator(messageDto.getConversationId()).setAuthor(senderCheck.get().getUserName()).setBody(messageDto.getMessageContant())
 				.create();
-		System.out.println("1333333333333333333333333333");
 
 		return new DataResponse(1000, "yoyo", message);
 	}
@@ -116,11 +108,12 @@ public class SoloChatServiceImpl implements SoloChatService {
 	public RestResponse fetchMessage(String channelSid, long senderUserId) {
 		Twilio.init(acc_sid, auth_token);
 		ResourceSet<Message> messages = Message.reader(channelSid).limit(20).read();
-
+		ArrayList<Message> listMessages = new ArrayList<>();
 		for(Message record : messages) {
-            System.out.println(record.getBody());
+			listMessages.add(record);
+            System.out.println(record);
         }
-		return new DataResponse(1000, "yoyo", messages);
+		return new DataResponse(200, "All List Returned", listMessages);
 	}
 
 }
