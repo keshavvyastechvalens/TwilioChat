@@ -27,7 +27,7 @@ export default function UserList(){
             headers: { Authorization: localStorage.getItem("Authorization") }
         }).then((res) => {
            console.log(res.data);
-            if(res.data.data.status===200 || res.data.status===409){
+            if(res.data.status===200 || res.data.status===409){
                 localStorage.setItem("conversationId",res.data.data.conversationId);
             }
         });

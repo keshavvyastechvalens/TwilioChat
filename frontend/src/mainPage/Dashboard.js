@@ -18,6 +18,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Copyright from './Copyright';
+import axios from 'axios';
 
 
 
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
-    backgroundColor:'#6b5b95'
+    backgroundColor: '#6b5b95'
   },
   toolbarIcon: {
     display: 'flex',
@@ -109,19 +110,41 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
-  
-  
+
+
   const classes = useStyles();
-  
+
   const [open, setOpen] = React.useState(false);
- 
-  
+
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+
+  const sendMessage = async () => {
+    console.log(document.getElementById("standard-full-width").value)
+    console.log(localStorage.getItem("conversationId"))
+    let obj = {
+      "conversationId": localStorage.getItem("conversationId"),
+      "messageContant": document.getElementById("standard-full-width").value
+    }
+    
+    const res =await axios.post(`http://localhost:8989/chat/sendMessage`, obj, {
+      headers: { Authorization: localStorage.getItem("Authorization") }
+    }).then((res) => {
+      console.log(res);
+      console.log("res----------------------------------------->>>>>>>>>>>>>");
+      
+   });
+
+    document.getElementById("standard-full-width").value = "";
+    console.log(res)
+  }
+
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
@@ -138,7 +161,7 @@ export default function Dashboard() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography component="h1" variant="h6" color="#6b5b95"  noWrap className={classes.title}>
+          <Typography component="h1" variant="h6" color="#6b5b95" noWrap className={classes.title}>
             Dashboard
           </Typography>
           <IconButton color="inherit">
@@ -156,7 +179,7 @@ export default function Dashboard() {
         open={open}
       >
         <div className={classes.toolbarIcon}>
-        <Typography component="h1" variant="h5" color="#6b5b95" style={{fontWeight:'bold' , color:'#6b5b95'}} noWrap className={classes.title}>
+          <Typography component="h1" variant="h5" color="#6b5b95" style={{ fontWeight: 'bold', color: '#6b5b95' }} noWrap className={classes.title}>
             Twilio Chat
           </Typography>
           <IconButton onClick={handleDrawerClose}>
@@ -164,29 +187,29 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List><UserList/></List>
+        <List><UserList /></List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             <Grid item xs={12} >
-              <Paper style={{height:'80vh', display:'flex', flexDirection:'column-reverse'}} className={fixedHeightPaper}>
-                <div style={{display:'flex'}}>
-                     
-                     <TextField
-                        id="standard-full-width"
-                       
-                        style={{ margin: 8 }}
-                        placeholder="Message"
-                        fullWidth
-                        margin="normal"
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                     
-                     <button><SendIcon/></button>
+              <Paper style={{ height: '80vh', display: 'flex', flexDirection: 'column-reverse' }} className={fixedHeightPaper}>
+                <div style={{ display: 'flex' }}>
+
+                  <TextField
+                    id="standard-full-width"
+
+                    style={{ margin: 8 }}
+                    placeholder="Message"
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+
+                  <button><SendIcon onClick={() => sendMessage()} />  </button>
                 </div>
               </Paper>
             </Grid>
