@@ -42,20 +42,21 @@ public class SoloChatController {
 	public RestResponse sendMessage(@Valid @RequestBody MessageDto messageDto, BindingResult result,HttpServletRequest req)
 	{
 		try {
-			System.out.println(messageDto);
 			if (result.getAllErrors() != null && !result.getAllErrors().isEmpty()){
                 
 				return new DataResponse(400, result.getAllErrors().get(0).getDefaultMessage(), null);
 			}
 			long senderUserId = Long.parseLong(req.getAttribute("id").toString());
+			
+			
 			return soloChatService.sendMessage(messageDto,senderUserId);
+			
 		
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
+			return new DataResponse(500, e.getMessage(), null);
 		}
-		return null;
 	}
 	
 	//MBffada358732f4183a3ee2e9afdea53f9
@@ -66,11 +67,11 @@ public class SoloChatController {
 	@GetMapping("/fetchMessage")
 	public RestResponse fetchMessage(@RequestParam("conversationId") String conversationId,HttpServletRequest req)
 	{
-		long senderUserId = Long.parseLong(req.getAttribute("id").toString());
+		try {
+			long senderUserId = Long.parseLong(req.getAttribute("id").toString());
 		return soloChatService.fetchMessage(conversationId,senderUserId);
-				
-				
-				
-				
+		} catch (Exception e) {
+			return new DataResponse(500, e.getMessage(), null);
+		}
 	}
 }

@@ -11,7 +11,7 @@ import javax.persistence.SequenceGenerator;
 import com.chat.TwilioChat.model.Users;
 
 @Entity
-public class SoloChat {
+public class SoloChat implements Cloneable{
 	@Id
 	@GeneratedValue(generator = "conversations_generator")
 	@SequenceGenerator(
@@ -32,6 +32,12 @@ public class SoloChat {
 	private String senderParticipantId;
 
 	private String receiverParticipantId;
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
 
 	public long getId() {
 		return id;
@@ -98,6 +104,9 @@ public class SoloChat {
 	}
 
 	
+	public SoloChat(SoloChat conversationExistCheckAgain) {
+	}
+
 	@Override
 	public String toString() {
 		return "SoloChat [conversationId=" + conversationId + ", id=" + id + ", receiver=" + receiver
