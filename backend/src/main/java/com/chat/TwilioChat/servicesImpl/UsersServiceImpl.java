@@ -108,9 +108,18 @@ UsersRepository usersRepository;
 	}
 	
 	@Override
-	public RestResponse logout(String header) {
-		// TODO Auto-generated method stub
-		return null;
+	public RestResponse logout(String userToken) {
+		Token token = tokenRepository.findByUserToken(userToken); 
+		if(token!=null)
+		{	
+			tokenRepository.delete(token);
+			return new DataResponse(StatusCode.SUCCESS, "you are logge out", null);
+		}
+		else
+		{
+			return new DataResponse(StatusCode.ERROR,"Invalid token", null);
+		}
+		
 	}
 	
 	public Users findByUserName(String username) {

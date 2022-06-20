@@ -8,5 +8,7 @@ import com.chat.TwilioChat.model.Token;
 
 @Repository
 public interface TokenRepository extends JpaRepository<Token, Long> {
+	
+	public Token findByUserToken(String userToken);
 
 }
