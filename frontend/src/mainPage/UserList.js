@@ -19,10 +19,7 @@ export default function UserList(){
     }
 
     function getIdOnClick(userData){
-         
-        console.log(userData.id);
 
-        var myId = localStorage.getItem("Authorization");
         axios.get(`http://localhost:8989/chat/createConversation?receiverUserId=${userData.id}`, {
             headers: { Authorization: localStorage.getItem("Authorization") }
         }).then((res) => {

@@ -5,7 +5,7 @@ import com.chat.TwilioChat.util.NoUserExistException;
 
 public interface SoloChatService {
 
-	RestResponse createConversation(long senderUserId, long receiverUserId) throws NoUserExistException;
+	RestResponse createConversation(long senderUserId, long receiverUserId) throws NoUserExistException,CloneNotSupportedException;
 
 	RestResponse sendMessage(MessageDto messageDto, long senderUserId);
 

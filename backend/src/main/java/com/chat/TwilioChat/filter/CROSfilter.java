@@ -38,14 +38,12 @@ public class CROSfilter implements Filter{
 		response.setHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept, Authorization, type");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 		response.addIntHeader("Access-Control-Max-Age", 180);	
-		System.out.println("--------------------------");
 
 		try 
 		{
 			HttpServletRequest httpRequest = (HttpServletRequest)req;
 			if(httpRequest.getHeader("Authorization")==null)
 			{
-				System.out.println("--------------------------");
 				chain.doFilter(req, res);
 			}
 			else

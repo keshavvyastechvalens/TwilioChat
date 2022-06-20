@@ -132,19 +132,22 @@ export default function Dashboard() {
       "conversationId": localStorage.getItem("conversationId"),
       "messageContant": document.getElementById("standard-full-width").value
     }
+
+    // headers: {Authorization: localStorage.getItem("Authorization") }
     
     const res =await axios.post(`http://localhost:8989/chat/sendMessage`, obj, {
-      headers: { Authorization: localStorage.getItem("Authorization") }
+      headers: {Authorization: localStorage.getItem("Authorization") }
     }).then((res) => {
-
+      console.log(res);
       const resp = axios.get(`http://localhost:8989/chat/fetchMessage?conversationId=${localStorage.getItem("conversationId")}`, {
         headers: { Authorization: localStorage.getItem("Authorization") }
       }).then((res) => {
   
-        console.log(res.data.data);
+        // console.log(res);
 
         if(res.data.status===200){
         let dta = res.data.data || [];
+        {dta.sort((a, b) => (a.index > b.index) ? 1 : -1)}
         setMessage(dta);
         }
         
@@ -208,7 +211,7 @@ export default function Dashboard() {
             
             <Grid item xs={12} >
            
-              <Paper style={{ height: '80vh' }} className={fixedHeightPaper}>
+              <Paper style={{ height: '80vh' }} className={fixedHeightPaper}>             
               {message.map((textMessage) => (
                     <List key={textMessage.sid}>
                         <ListItem>

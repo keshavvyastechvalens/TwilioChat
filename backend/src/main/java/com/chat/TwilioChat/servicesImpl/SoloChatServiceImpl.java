@@ -1,6 +1,7 @@
 package com.chat.TwilioChat.servicesImpl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import com.chat.TwilioChat.response.DataResponse;
 import com.chat.TwilioChat.response.RestResponse;
 import com.chat.TwilioChat.services.SoloChatService;
 import com.chat.TwilioChat.util.NoUserExistException;
+import com.ctc.wstx.shaded.msv_core.datatype.xsd.Comparator;
 import com.twilio.Twilio;
 import com.twilio.base.ResourceSet;
 import com.twilio.rest.conversations.v1.Conversation;
@@ -24,7 +26,7 @@ import com.twilio.rest.conversations.v1.conversation.Message;
 import com.twilio.rest.conversations.v1.conversation.Participant;
 
 @Service
-public class SoloChatServiceImpl implements SoloChatService {
+public class SoloChatServiceImpl implements SoloChatService{
 
 	@Autowired
 	UsersRepository usersRepository;
@@ -39,7 +41,7 @@ public class SoloChatServiceImpl implements SoloChatService {
 	private String auth_token;
 
 	@Override
-	public RestResponse createConversation(long senderUserId, long receiverUserId) throws NoUserExistException {
+	public RestResponse createConversation(long senderUserId, long receiverUserId) throws NoUserExistException, CloneNotSupportedException {
 		Twilio.init(acc_sid, auth_token);
 		Optional<Users> senderCheck = usersRepository.findById(senderUserId);
 		Optional<Users> receiverCheck = usersRepository.findById(receiverUserId);
@@ -56,12 +58,19 @@ public class SoloChatServiceImpl implements SoloChatService {
 
 		Users receiver = receiverCheck.get();
 		// here condition for alredy existing convo should be given
-		SoloChat conversationExistCheck = soloChatRepository.findBySenderIdAndReceiverId(sender.getId(),
-				receiver.getId());
+		
+SoloChat conversationExistCheck = soloChatRepository.findBySenderIdAndReceiverId(sender.getId(),receiver.getId());
+SoloChat conversationExistCheckAgain = soloChatRepository.findBySenderIdAndReceiverId(receiver.getId(), sender.getId());
 
 		if (conversationExistCheck != null) {
-			return new DataResponse(409, "CONVERSATION ALREADY EXIST !", conversationExistCheck);
-		} else {
+	 return new DataResponse(409, "CONVERSATION ALREADY EXIST !", conversationExistCheck);
+	 } else if (conversationExistCheckAgain != null) {
+		SoloChat soloChat1 = (SoloChat)conversationExistCheckAgain.clone();
+		System.out.println(soloChat1);
+		soloChat1.setReceiver(conversationExistCheckAgain.getSender());
+		soloChat1.setSender(conversationExistCheckAgain.getReceiver());
+		 return new DataResponse(409, "CONVERSATION ALREADY EXIST !", soloChat1);
+		 } else{
 
 			String convoName = sender.getFirstName() + "-" + receiver.getFirstName();
 			Conversation conversation = null;
@@ -98,32 +107,38 @@ public class SoloChatServiceImpl implements SoloChatService {
 	public RestResponse sendMessage(MessageDto messageDto, long senderUserId) {
 		Twilio.init(acc_sid, auth_token);
 		Optional<Users> senderCheck = usersRepository.findById(senderUserId);
+		System.out.println(senderCheck.get().getUserName());
 		Message message = Message.creator(messageDto.getConversationId()).setAuthor(senderCheck.get().getUserName()).setBody(messageDto.getMessageContant())
 				.create();
-
-		return new DataResponse(1000, "yoyo", message);
+		return new DataResponse(1000, "yoyo",message);
 	}
 
 	@Override
 	public RestResponse fetchMessage(String conversationId, long senderUserId) {
 		Twilio.init(acc_sid, auth_token);
-		
 		SoloChat soloChat = soloChatRepository.findBySenderIdAndConversationId(senderUserId,conversationId);
 		if(soloChat==null)
 		{
+			 soloChat = soloChatRepository.findByReceiverIdAndConversationId(senderUserId,conversationId);
+			if(soloChat==null)
+		{
 			return new DataResponse(400,"MISMATCH IN CONVERSATION AND SENDER",null);
 		}
-		
-		
-		
-		
-		
-		ResourceSet<Message> messages = Message.reader(conversationId).limit(20).read();
+	}
+		ResourceSet<Message> messages = Message.reader(conversationId).setOrder(Message.OrderType.DESC)
+		.limit(10).read();
 		ArrayList<Message> listMessages = new ArrayList<>();
 		for(Message record : messages) {
 			listMessages.add(record);
-            System.out.println(record);
         }
+
+		Message message = Message.fetcher(
+			conversationId,
+			"IM79cf7adad80549afac440ca6b4e5894c")
+		.fetch();
+
+	System.out.println(message.getDelivery());
+
 		return new DataResponse(200, "All List Returned", listMessages);
 	}
 
