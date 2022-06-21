@@ -23,12 +23,21 @@ export default function UserList(){
         axios.get(`http://localhost:8989/chat/createConversation?receiverUserId=${userData.id}`, {
             headers: { Authorization: localStorage.getItem("Authorization") }
         }).then((res) => {
-           console.log(res.data);
+            setUserData(res.data);
             if(res.data.status===200 || res.data.status===409){
                 localStorage.setItem("conversationId",res.data.data.conversationId);
             }
+            
         });
+        
     }
+
+    console.log(userData.data.receiver.userName+userData.data.sender.userName);
+        // const createChannel=userData
+        // console.log(userData.data.receiver.userName); //sender
+        // console.log(createChannel.data.sender.userName);
+        // console.log(userData.data.receiver.userName+userData.data.sender.userName);
+
 
     return<>
          {data.map((user) => (

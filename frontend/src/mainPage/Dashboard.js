@@ -23,6 +23,7 @@ import axios from 'axios';
 import { Avatar, ListItem, ListItemAvatar, ListItemIcon, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import UserList from './UserList';
+import { useLocation } from 'react-router-dom';
 const Chat =require("twilio-client")
 
 
@@ -126,11 +127,16 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function Dashboard() {
+export default function Dashboard(props) {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = useState([]);
+  const location =useLocation()
+  const [name, setName] = useState("")
+  // console.log("location:--- ",location.state.name.userName);
+  // setName(location.state.name.userName)
+  
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -207,7 +213,7 @@ const getToken= async()=>
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="#6b5b95" noWrap className={classes.title}>
-            Dashboard
+           {location.state.name.userName}
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">

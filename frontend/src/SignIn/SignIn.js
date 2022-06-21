@@ -30,9 +30,10 @@ const onSubmit=async values=>{
   
    if(res.data.status===200)
    {
-    console.log(res.data);
+    console.log("res.data",res.data.data.userName);
+
     localStorage.setItem("Authorization",res.data.data.token);
-    navigate('/dashboard')
+    navigate('/dashboard',{state:{name:res.data.data}})
   
     dispatch(setProduct(res.data.data.userList))
 
