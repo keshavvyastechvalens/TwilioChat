@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.internal.bytebuddy.implementation.bind.annotation.StubValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import com.chat.TwilioChat.services.SoloChatService;
 import com.chat.TwilioChat.util.NoUserExistException;
 import com.twilio.Twilio;
 import com.twilio.base.ResourceSet;
+import com.twilio.jwt.accesstoken.AccessToken;
+import com.twilio.jwt.accesstoken.ChatGrant;
 import com.twilio.rest.conversations.v1.Conversation;
 import com.twilio.rest.conversations.v1.conversation.Message;
 import com.twilio.rest.conversations.v1.conversation.Participant;
@@ -34,6 +37,15 @@ public class SoloChatServiceImpl implements SoloChatService {
 
 	@Value("${ACCOUNT_SID}")
 	private String acc_sid;
+	
+	@Value("${TWILIO_API_KET}")
+	private String twilioApiKey;
+	
+	@Value("${TWILIO_API_SECRET}")
+	private String twilioApiSecret;
+	
+	@Value("${SERVICE_SID}")
+	private String serviceSid;
 
 	@Value("${AUTH_TOKEN}")
 	private String auth_token;
@@ -126,5 +138,22 @@ public class SoloChatServiceImpl implements SoloChatService {
         }
 		return new DataResponse(200, "All List Returned", listMessages);
 	}
+
+	@Override
+	public String getAccessToken(String identity) {
+		
+	    ChatGrant grant = new ChatGrant();
+	    grant.setServiceSid(serviceSid);
+
+	    AccessToken token = new AccessToken.Builder(acc_sid, twilioApiKey, twilioApiSecret)
+	        .identity(identity).grant(grant).build();
+
+	    System.out.println(token.toJwt());
+		
+		return token.toJwt();
+	}
+	
+	
+	
 
 }
