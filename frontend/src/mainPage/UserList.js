@@ -17,18 +17,74 @@ export default function UserList() {
     const data = useSelector((state) => state.allProducts.Product)
     const client_response = useSelector((state) => state.allProducts.client)
 
-console.log('client_response',client_response);
-    
+    console.log('client_response', client_response);
+    var channelName1;
+    var channelName2;
     function getIdOnClick(user) {
         // alert("pass",user)
         console.log("-------------------", user);
-        let channelName1 = user.userName.concat(localStorage.getItem("login_name"));
-        let channelName2 = localStorage.getItem("login_name") + user.userName;
+        channelName1 = user.userName.concat(localStorage.getItem("login_name"));
+        channelName2 = localStorage.getItem("login_name") + user.userName;
         console.log("one------", channelName1);
         console.log("one------", channelName2);
-      
-    }
 
+
+        client_response.on("tokenAboutToExpire", async () => {
+            // const token = await this.getToken(email);
+            const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
+            localStorage.setItem("twilio_access_token", response.data)
+            client_response.updateToken(response.data);
+        });
+
+        client_response.on("tokenExpired", async () => {
+            const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
+            localStorage.setItem("twilio_access_token", response.data)
+            client_response.updateToken(response.data);
+        });
+        joinChannel();
+
+    }
+    //----------------------------------------------------------------------------------------- 
+
+
+    const joinChannel = async () => {
+        client_response.on("channelJoined", async (channel) => {
+            // getting list of all messages since this is an existing channel
+            const messages = await channel.getMessages();
+        });
+        console.log("11111");
+        try {
+            const channel = await client_response.getChannelByUniqueName(channelName1);
+            // await this.joinChannel(channel);
+            await channel.join();
+
+            console.log("2222");
+
+        }
+        catch {
+            try {
+                const channel = await client_response.getChannelByUniqueName(channelName2);
+                await channel.join();
+                console.log("33333");
+
+            }
+            catch {
+                try {
+                    const channel = await client_response.createChannel({
+                        uniqueName: channelName1,
+                        friendlyName: channelName1,
+                    });
+                    // await this.joinChannel(channel);
+                    const res = await channel.join();
+                    console.log("444444----",res);
+                    console.log("44444")
+                } catch {
+                    throw new Error("unable to create channel, please reload this page");
+                }
+            }
+        }
+
+    }
 
 
 
