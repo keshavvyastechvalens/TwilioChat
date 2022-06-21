@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -24,8 +24,9 @@ import { Avatar, ListItem, ListItemAvatar, ListItemIcon, TextField } from '@mate
 import SendIcon from '@material-ui/icons/Send';
 import UserList from './UserList';
 import { useLocation } from 'react-router-dom';
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setClient } from '../Redux/Action/Action';
+import { ChannelContext } from '../App';
 const Chat = require("twilio-chat");
 
 
@@ -134,7 +135,10 @@ export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = useState([]);
+  const [msg, setMsg] = useState("");
   const location = useLocation()
+  const [channel,setChannel] = useContext(ChannelContext);
+
   console.log(location.state.name.userName);
 
   const handleDrawerOpen = () => {
@@ -146,55 +150,38 @@ export default function Dashboard() {
 
 
   const sendMessage = async () => {
-    let obj = {
-      "conversationId": localStorage.getItem("conversationId"),
-      "messageContant": document.getElementById("standard-full-width").value
-    }
-    // headers: {Authorization: localStorage.getItem("Authorization") }
-    const res = await axios.post(`http://localhost:8989/chat/sendMessage`, obj, {
-      headers: { Authorization: localStorage.getItem("Authorization") }
-    }).then((res) => {
-      console.log(res);
-      const resp = axios.get(`http://localhost:8989/chat/fetchMessage?conversationId=${localStorage.getItem("conversationId")}`, {
-        headers: { Authorization: localStorage.getItem("Authorization") }
-      }).then((res) => {
-        // console.log(res);
-        if (res.data.status === 200) {
-          let dta = res.data.data || [];
-          { dta.sort((a, b) => (a.index > b.index) ? 1 : -1) }
-          setMessage(dta);
-        }
-      });
-    });
-    document.getElementById("standard-full-width").value = "";
+    alert("PASS")
+     const res= channel.sendMessage("msg");
+      console.log("++++++++++++++++++++++++++++++++++++++++++++++",res);
+      console.log(res.then((resp)=>{
+        console.log(resp);
+      }));
+     document.getElementById("standard-full-width").value = "";
   }
 
 
 
-  const createClient =async()=>
-  {
-    
-    const  token= localStorage.getItem("twilio_access_token")
-    const client= await Chat.Client.create(token);
-    console.log( "client response-----",client);
+  const createClient = async () => {
+
+    const token = localStorage.getItem("twilio_access_token")
+    const client = await Chat.Client.create(token);
+    console.log("client response-----", client);
     dispatch(setClient(client))
 
   }
-  
-const getToken= async()=>
-{
-  const response= await axios.get("http://localhost:8989/chat/token",{headers:{"Authorization":localStorage.getItem("Authorization")}}) 
-  localStorage.setItem("twilio_access_token", response.data)
-}
+
+  const getToken = async () => {
+    const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
+    localStorage.setItem("twilio_access_token", response.data)
+  }
 
 
-  useEffect(()=>
-  {
+  useEffect(() => {
     getToken()
     createClient()
-  },[])
+  }, [])
 
-  
+
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -213,7 +200,7 @@ const getToken= async()=>
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="#6b5b95" noWrap className={classes.title}>
-           {location.state.name.userName}
+            {location.state.name.userName}
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
@@ -264,7 +251,8 @@ const getToken= async()=>
 
                   <TextField
                     id="standard-full-width"
-
+                    onChange={(event)=>setMsg(event.target.value)}
+                    value={msg}
                     style={{ margin: 8 }}
                     placeholder="Message"
                     fullWidth

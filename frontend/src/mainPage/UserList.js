@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -6,6 +6,7 @@ import { Avatar } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Client } from '@twilio/conversations';
+import { ChannelContext } from '../App';
 
 
 
@@ -16,6 +17,7 @@ export default function UserList() {
 
     const data = useSelector((state) => state.allProducts.Product)
     const client_response = useSelector((state) => state.allProducts.client)
+    const [channel, setChannel] = useContext(ChannelContext);
 
     console.log('client_response', client_response);
     var channelName1;
@@ -23,8 +25,8 @@ export default function UserList() {
     function getIdOnClick(user) {
         // alert("pass",user)
         console.log("-------------------", user);
-        channelName1 = user.userName.concat(localStorage.getItem("login_name"));
-        channelName2 = localStorage.getItem("login_name") + user.userName;
+        channelName2 = user.userName.concat(localStorage.getItem("login_name"));
+        channelName1 = localStorage.getItem("login_name") + user.userName;
         console.log("one------", channelName1);
         console.log("one------", channelName2);
 
@@ -49,35 +51,34 @@ export default function UserList() {
 
     const joinChannel = async () => {
         client_response.on("channelJoined", async (channel) => {
-            // getting list of all messages since this is an existing channel
             const messages = await channel.getMessages();
+            console.log("messages");
         });
-        console.log("11111");
+        console.log("--------------------------------------------------");
         try {
-            const channel = await client_response.getChannelByUniqueName(channelName1);
-            // await this.joinChannel(channel);
-            await channel.join();
-
-            console.log("2222");
+            const channel1 = await client_response.getChannelByUniqueName(channelName1);
+            const res1 = await channel.join();
+            channel1.on("messageAdded", (message)=>console.log("unique"));
+            setChannel(res1);
 
         }
         catch {
             try {
-                const channel = await client_response.getChannelByUniqueName(channelName2);
-                await channel.join();
-                console.log("33333");
-
+                const channel2 = await client_response.getChannelByUniqueName(channelName2);
+                const res2 = await channel.join();
+                channel2.on("messageAdded", (message)=>console.log("unique"));
+                setChannel(res2);
             }
             catch {
                 try {
-                    const channel = await client_response.createChannel({
+                    const channel3 = await client_response.createChannel({
                         uniqueName: channelName1,
                         friendlyName: channelName1,
                     });
-                    // await this.joinChannel(channel);
-                    const res = await channel.join();
-                    console.log("444444----",res);
-                    console.log("44444")
+                    const res3 = await channel.join();
+                    setChannel(res3);
+                    channel3.on("messageAdded", (message)=>console.log("unique"));
+
                 } catch {
                     throw new Error("unable to create channel, please reload this page");
                 }
