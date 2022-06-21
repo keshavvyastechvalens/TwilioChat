@@ -20,12 +20,14 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ListItemText from '@material-ui/core/ListItemText';
 import Copyright from './Copyright';
 import axios from 'axios';
-
-
-
 import { Avatar, ListItem, ListItemAvatar, ListItemIcon, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import UserList from './UserList';
+const Chat =require("twilio-client")
+
+
+
+
 
 
 const drawerWidth = 240;
@@ -110,14 +112,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export default function Dashboard() {
 
-
   const classes = useStyles();
-
   const [open, setOpen] = React.useState(false);
-  const [message,setMessage] = useState([]);
-
+  const [message, setMessage] = useState([]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -132,32 +145,40 @@ export default function Dashboard() {
       "conversationId": localStorage.getItem("conversationId"),
       "messageContant": document.getElementById("standard-full-width").value
     }
-
     // headers: {Authorization: localStorage.getItem("Authorization") }
-    
-    const res =await axios.post(`http://localhost:8989/chat/sendMessage`, obj, {
-      headers: {Authorization: localStorage.getItem("Authorization") }
+    const res = await axios.post(`http://localhost:8989/chat/sendMessage`, obj, {
+      headers: { Authorization: localStorage.getItem("Authorization") }
     }).then((res) => {
       console.log(res);
       const resp = axios.get(`http://localhost:8989/chat/fetchMessage?conversationId=${localStorage.getItem("conversationId")}`, {
         headers: { Authorization: localStorage.getItem("Authorization") }
       }).then((res) => {
-  
         // console.log(res);
-
-        if(res.data.status===200){
-        let dta = res.data.data || [];
-        {dta.sort((a, b) => (a.index > b.index) ? 1 : -1)}
-        setMessage(dta);
+        if (res.data.status === 200) {
+          let dta = res.data.data || [];
+          { dta.sort((a, b) => (a.index > b.index) ? 1 : -1) }
+          setMessage(dta);
         }
-        
-        
-     });
-
-     });
-
+      });
+    });
     document.getElementById("standard-full-width").value = "";
   }
+
+
+
+  const createClient =async()=>
+  { 
+    const response= await Chat.Client.create('token')
+    console.log(response);
+  }
+  
+
+  useEffect(()=>
+  {
+    createClient()
+  },[])
+
+  
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
@@ -205,26 +226,26 @@ export default function Dashboard() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        
+
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            
+
             <Grid item xs={12} >
-           
-              <Paper style={{ height: '80vh' }} className={fixedHeightPaper}>             
-              {message.map((textMessage) => (
-                    <List key={textMessage.sid}>
-                        <ListItem>
-                          <ListItemAvatar>
-                            <Avatar style={{textTransform: 'capitalize'}} alt={textMessage.author} src="logo.jpg" >
-                            </Avatar>
-                          </ListItemAvatar>
-                          <ListItemText primary={textMessage.body} />
-                        </ListItem>,   
-                    </List>
-         ))}
+
+              <Paper style={{ height: '80vh' }} className={fixedHeightPaper}>
+                {message.map((textMessage) => (
+                  <List key={textMessage.sid}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar style={{ textTransform: 'capitalize' }} alt={textMessage.author} src="logo.jpg" >
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={textMessage.body} />
+                    </ListItem>,
+                  </List>
+                ))}
                 <div style={{ display: 'flex' }}>
-               
+
                   <TextField
                     id="standard-full-width"
 
