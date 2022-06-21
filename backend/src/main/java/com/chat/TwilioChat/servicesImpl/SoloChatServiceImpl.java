@@ -39,7 +39,7 @@ public class SoloChatServiceImpl implements SoloChatService{
 
 	@Value("${ACCOUNT_SID}")
 	private String acc_sid;
-	
+
 	@Value("${TWILIO_API_KET}")
 	private String twilioApiKey;
 	

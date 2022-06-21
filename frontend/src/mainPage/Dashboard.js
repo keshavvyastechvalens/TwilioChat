@@ -167,14 +167,24 @@ export default function Dashboard() {
 
 
   const createClient =async()=>
-  { 
-    const response= await Chat.Client.create('token')
-    console.log(response);
+  {
+    
+    const  token= localStorage.getItem("twilio_access_token")
+    const response= await Chat
+    console.log( "client response-----",response);
   }
   
+const getToken= async()=>
+{
+  const response= await axios.get("http://localhost:8989/chat/token",{headers:{"Authorization":localStorage.getItem("Authorization")}}) 
+  localStorage.setItem("twilio_access_token", response.data)
+
+}
+
 
   useEffect(()=>
   {
+    getToken()
     createClient()
   },[])
 
