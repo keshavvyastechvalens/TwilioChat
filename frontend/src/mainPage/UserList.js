@@ -16,68 +16,58 @@ export default function UserList() {
     // const [userData, setUserData] = useState([])
 
     const data = useSelector((state) => state.allProducts.Product)
-    const client_response = useSelector((state) => state.allProducts.client)
-    const [channel, setChannel] = useContext(ChannelContext);
+    const [channelTest, setChannelTest,clientTest,setClientTest] = useContext(ChannelContext);
 
-    console.log('client_response', client_response);
     var channelName1;
     var channelName2;
     function getIdOnClick(user) {
-        // alert("pass",user)
-        console.log("-------------------", user);
         channelName2 = user.userName.concat(localStorage.getItem("login_name"));
         channelName1 = localStorage.getItem("login_name") + user.userName;
-        console.log("one------", channelName1);
-        console.log("one------", channelName2);
 
 
-        client_response.on("tokenAboutToExpire", async () => {
-            // const token = await this.getToken(email);
+        clientTest.on("tokenAboutToExpire", async () => {
             const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
             localStorage.setItem("twilio_access_token", response.data)
-            client_response.updateToken(response.data);
+            clientTest.updateToken(response.data);
         });
 
-        client_response.on("tokenExpired", async () => {
+        clientTest.on("tokenExpired", async () => {
             const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
             localStorage.setItem("twilio_access_token", response.data)
-            client_response.updateToken(response.data);
+            clientTest.updateToken(response.data);
         });
         joinChannel();
 
     }
-    //----------------------------------------------------------------------------------------- 
 
 
     const joinChannel = async () => {
-        client_response.on("channelJoined", async (channel) => {
+        clientTest.on("channelJoined", async (channel) => {
             const messages = await channel.getMessages();
             console.log("messages");
         });
-        console.log("--------------------------------------------------");
         try {
-            const channel1 = await client_response.getChannelByUniqueName(channelName1);
-            const res1 = await channel.join();
-            channel1.on("messageAdded", (message)=>console.log("unique"));
-            setChannel(res1);
-
+            const channel1 = await clientTest.getChannelByUniqueName(channelName1);
+            const res1 = await channel1.join();
+            channel1.on("messageAdded", (message)=>console.log("unique------",message));
+            setChannelTest(res1);
         }
         catch {
             try {
-                const channel2 = await client_response.getChannelByUniqueName(channelName2);
-                const res2 = await channel.join();
-                channel2.on("messageAdded", (message)=>console.log("unique"));
-                setChannel(res2);
+                const channel2 = await clientTest.getChannelByUniqueName(channelName2);
+                const res2 = await channel2.join();
+                channel2.on("messageAdded", (message)=>console.log("unique-----",message));
+                setChannelTest(res2);
             }
             catch {
                 try {
-                    const channel3 = await client_response.createChannel({
+                    const channel3 = await clientTest.createChannel({
                         uniqueName: channelName1,
                         friendlyName: channelName1,
                     });
-                    const res3 = await channel.join();
-                    setChannel(res3);
-                    channel3.on("messageAdded", (message)=>console.log("unique"));
+                    const res3 = await channel3.join();
+                    channel3.on("messageAdded", (message)=>console.log("unique----",message));
+                    setChannelTest(res3);
 
                 } catch {
                     throw new Error("unable to create channel, please reload this page");

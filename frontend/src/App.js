@@ -9,13 +9,15 @@ export const ChannelContext = React.createContext();
 
 function App() {
  
-  const [channel, setChannel] = useState({}); 
+  const [channelTest, setChannelTest] = useState({}); 
+  const [clientTest,setClientTest ] = useState({}); 
+
  
  
   return (
 
     <>
-      <ChannelContext.Provider value={[channel,setChannel]}>
+      <ChannelContext.Provider value={[channelTest, setChannelTest,clientTest,setClientTest]}>
       <Routes>
         <Route path='/signup' element={<SIgnUp />} />
         <Route exact path='signin' element={<SignIn />} />

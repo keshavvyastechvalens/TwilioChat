@@ -137,7 +137,7 @@ export default function Dashboard() {
   const [message, setMessage] = useState([]);
   const [msg, setMsg] = useState("");
   const location = useLocation()
-  const [channel,setChannel] = useContext(ChannelContext);
+  const [channelTest, setChannelTest,clientTest,setClientTest] = useContext(ChannelContext);
 
   console.log(location.state.name.userName);
 
@@ -150,12 +150,7 @@ export default function Dashboard() {
 
 
   const sendMessage = async () => {
-    alert("PASS")
-     const res= channel.sendMessage("msg");
-      console.log("++++++++++++++++++++++++++++++++++++++++++++++",res);
-      console.log(res.then((resp)=>{
-        console.log(resp);
-      }));
+     const res=channelTest.sendMessage("msg");
      document.getElementById("standard-full-width").value = "";
   }
 
@@ -165,9 +160,7 @@ export default function Dashboard() {
 
     const token = localStorage.getItem("twilio_access_token")
     const client = await Chat.Client.create(token);
-    console.log("client response-----", client);
-    dispatch(setClient(client))
-
+    setClientTest(client);
   }
 
   const getToken = async () => {
