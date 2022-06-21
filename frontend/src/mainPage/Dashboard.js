@@ -23,7 +23,9 @@ import axios from 'axios';
 import { Avatar, ListItem, ListItemAvatar, ListItemIcon, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import UserList from './UserList';
-const Chat =require("twilio-client")
+
+
+const Chat = require("twilio-chat");
 
 
 
@@ -168,17 +170,15 @@ export default function Dashboard() {
 
   const createClient =async()=>
   {
-    
     const  token= localStorage.getItem("twilio_access_token")
-    const response= await Chat
-    console.log( "client response-----",response);
+    const client= await Chat.Client.create(token);
+    console.log( "client response-----",client);
   }
   
 const getToken= async()=>
 {
   const response= await axios.get("http://localhost:8989/chat/token",{headers:{"Authorization":localStorage.getItem("Authorization")}}) 
   localStorage.setItem("twilio_access_token", response.data)
-
 }
 
 
