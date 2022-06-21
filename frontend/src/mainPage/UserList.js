@@ -11,28 +11,40 @@ import axios from 'axios';
 
 
 export default function UserList(){
-    const [userData, setUserData] = useState([])
+    // const [userData, setUserData] = useState([])
    
     const data= useSelector((state)=>state.allProducts.Product)
-    function handleClick(){
-        alert("pass")
+
+
+
+    function getIdOnClick(user){
+        // alert("pass",user)
+        console.log(user.userName);
     }
 
-    function getIdOnClick(userData){
 
-        axios.get(`http://localhost:8989/chat/createConversation?receiverUserId=${userData.id}`, {
-            headers: { Authorization: localStorage.getItem("Authorization") }
-        }).then((res) => {
-            setUserData(res.data);
-            if(res.data.status===200 || res.data.status===409){
-                localStorage.setItem("conversationId",res.data.data.conversationId);
-            }
+
+
+
+
+    // function getIdOnClick(userData){
+
+    //     axios.get(`http://localhost:8989/chat/createConversation?receiverUserId=${userData.id}`, {
+    //         headers: { Authorization: localStorage.getItem("Authorization") }
+    //     }).then((res) => {
+    //         setUserData(res.data);
+    //         if(res.data.status===200 || res.data.status===409){
+    //             localStorage.setItem("conversationId",res.data.data.conversationId);
+    //         }
             
-        });
+    //     });
         
-    }
+                 
+    // }
 
-    console.log(userData.data.receiver.userName+userData.data.sender.userName);
+    // console.log("Receiver",userData.data.receiver.userName);
+    // console.log("Sender",userData.data.sender.userName);
+    // console.log(userData.data.receiver.userName+userData.data.sender.userName);
         // const createChannel=userData
         // console.log(userData.data.receiver.userName); //sender
         // console.log(createChannel.data.sender.userName);

@@ -23,8 +23,7 @@ import axios from 'axios';
 import { Avatar, ListItem, ListItemAvatar, ListItemIcon, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import UserList from './UserList';
-
-
+import { useLocation } from 'react-router-dom';
 const Chat = require("twilio-chat");
 
 
@@ -128,16 +127,13 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function Dashboard(props) {
+export default function Dashboard() {
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = useState([]);
-  const location =useLocation()
-  const [name, setName] = useState("")
-  // console.log("location:--- ",location.state.name.userName);
-  // setName(location.state.name.userName)
-  
+  const location = useLocation()
+  console.log(location.state.name.userName);
 
   const handleDrawerOpen = () => {
     setOpen(true);
