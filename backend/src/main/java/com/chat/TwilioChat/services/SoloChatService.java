@@ -10,5 +10,7 @@ public interface SoloChatService {
 	RestResponse sendMessage(MessageDto messageDto, long senderUserId);
 
 	RestResponse fetchMessage(String conversationId, long senderUserId);
+	
+	String getAccessToken(String identity);
 
 }

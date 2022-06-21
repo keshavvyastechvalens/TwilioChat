@@ -1,5 +1,7 @@
 package com.chat.TwilioChat.controller;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.chat.TwilioChat.model.Users;
+import com.chat.TwilioChat.repository.UsersRepository;
 import com.chat.TwilioChat.requestdto.MessageDto;
 import com.chat.TwilioChat.response.DataResponse;
 import com.chat.TwilioChat.response.RestResponse;
@@ -23,6 +27,9 @@ import com.chat.TwilioChat.util.NoUserExistException;
 public class SoloChatController {
 	@Autowired
 	SoloChatService soloChatService;
+	
+	@Autowired
+	UsersRepository usersRepository;
 	
 	@GetMapping("/createConversation")
 	public RestResponse createConversation(@RequestParam("receiverUserId") long receiverUserId, HttpServletRequest req)
@@ -51,6 +58,7 @@ public class SoloChatController {
 			
 			return soloChatService.sendMessage(messageDto,senderUserId);
 			
+//			return soloChatService.sendMessage(messageDto,senderUserId);
 		
 		}
 		catch(Exception e)
@@ -73,5 +81,33 @@ public class SoloChatController {
 		} catch (Exception e) {
 			return new DataResponse(500, e.getMessage(), null);
 		}
+	}
+	
+	@GetMapping("/token")
+	public String getToken(HttpServletRequest req)
+	{
+		long userId = Long.parseLong(req.getAttribute("id").toString());
+		Optional<Users> user = usersRepository.findById(userId);
+		
+		
+		
+		String identity = user.get().getUserName();
+		if(identity==null || identity.isEmpty())
+		{
+			System.out.println("Invalid token");
+		}
+		
+		try
+		{
+			return soloChatService.getAccessToken(identity);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		return null;
+
 	}
 }
