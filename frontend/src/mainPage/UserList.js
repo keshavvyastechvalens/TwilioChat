@@ -5,21 +5,28 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { Avatar } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { Client } from '@twilio/conversations';
 
 
 
 
 
-export default function UserList(){
+export default function UserList() {
     // const [userData, setUserData] = useState([])
-   
-    const data= useSelector((state)=>state.allProducts.Product)
 
+    const data = useSelector((state) => state.allProducts.Product)
+    const client_response = useSelector((state) => state.allProducts.client)
 
-
-    function getIdOnClick(user){
+console.log('client_response',client_response);
+    
+    function getIdOnClick(user) {
         // alert("pass",user)
-        console.log(user.userName);
+        console.log("-------------------", user);
+        let channelName1 = user.userName.concat(localStorage.getItem("login_name"));
+        let channelName2 = localStorage.getItem("login_name") + user.userName;
+        console.log("one------", channelName1);
+        console.log("one------", channelName2);
+      
     }
 
 
@@ -36,32 +43,32 @@ export default function UserList(){
     //         if(res.data.status===200 || res.data.status===409){
     //             localStorage.setItem("conversationId",res.data.data.conversationId);
     //         }
-            
+
     //     });
-        
-                 
+
+
     // }
 
     // console.log("Receiver",userData.data.receiver.userName);
     // console.log("Sender",userData.data.sender.userName);
     // console.log(userData.data.receiver.userName+userData.data.sender.userName);
-        // const createChannel=userData
-        // console.log(userData.data.receiver.userName); //sender
-        // console.log(createChannel.data.sender.userName);
-        // console.log(userData.data.receiver.userName+userData.data.sender.userName);
+    // const createChannel=userData
+    // console.log(userData.data.receiver.userName); //sender
+    // console.log(createChannel.data.sender.userName);
+    // console.log(userData.data.receiver.userName+userData.data.sender.userName);
 
 
-    return<>
-         {data.map((user) => (
-            <ListItem button key={user.id} onClick={()=>getIdOnClick(user)}  >
-            <ListItemIcon>
-            <Avatar style={{textTransform: 'capitalize'}} alt={user.firstName} src="logo.jpg" />
-            </ListItemIcon>
-            <ListItemText style={{textTransform: 'capitalize'}} primary={user.firstName} />
+    return <>
+        {data.map((user) => (
+            <ListItem button key={user.id} onClick={() => getIdOnClick(user)}  >
+                <ListItemIcon>
+                    <Avatar style={{ textTransform: 'capitalize' }} alt={user.firstName} src="logo.jpg" />
+                </ListItemIcon>
+                <ListItemText style={{ textTransform: 'capitalize' }} primary={user.firstName} />
             </ListItem>
-         ))}
+        ))}
 
-    
+
     </>
 }
 

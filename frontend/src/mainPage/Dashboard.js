@@ -24,6 +24,8 @@ import { Avatar, ListItem, ListItemAvatar, ListItemIcon, TextField } from '@mate
 import SendIcon from '@material-ui/icons/Send';
 import UserList from './UserList';
 import { useLocation } from 'react-router-dom';
+import {useDispatch} from 'react-redux'
+import { setClient } from '../Redux/Action/Action';
 const Chat = require("twilio-chat");
 
 
@@ -128,7 +130,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Dashboard() {
-
+  const dispatch = useDispatch()
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = useState([]);
@@ -171,9 +173,12 @@ export default function Dashboard() {
 
   const createClient =async()=>
   {
+    
     const  token= localStorage.getItem("twilio_access_token")
     const client= await Chat.Client.create(token);
     console.log( "client response-----",client);
+    dispatch(setClient(client))
+
   }
   
 const getToken= async()=>

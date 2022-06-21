@@ -17,3 +17,11 @@ export const selectedProduct=(product)=>
         payload:product
     }
 }
+
+export const setClient=(client)=>
+{
+    return{
+        type:ActionTypes.SELECTED_CLIENT,
+        payload:client
+    }    
+}
