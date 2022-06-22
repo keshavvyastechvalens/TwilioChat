@@ -18,12 +18,15 @@ export default function UserList() {
     const data = useSelector((state) => state.allProducts.Product)
     const [channelTest, setChannelTest, clientTest, setClientTest, messageTest, setMessageTest] = useContext(ChannelContext);
 
+    var channelTestName1;
+    var channelTestName2;
     var channelName1;
     var channelName2;
     function getIdOnClick(user) {
-        channelName2 = user.userName.concat(localStorage.getItem("login_name"));
-        channelName1 = localStorage.getItem("login_name") + user.userName;
-
+        channelTestName2 = user.userName.concat(localStorage.getItem("login_name"));
+        channelTestName1 = localStorage.getItem("login_name") + user.userName;
+        channelName1 = channelTestName1.toLowerCase();
+        channelName2 = channelTestName2.toLowerCase();
 
         clientTest.on("tokenAboutToExpire", async () => {
             const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
@@ -49,7 +52,11 @@ export default function UserList() {
         });
         try {
             const channel1 = await clientTest.getChannelByUniqueName(channelName1);
-            const res1 = await channel1.join();
+            console.log("111111111111111111111",channel1.channelState.status);
+            
+            if (channel1.channelState.status !== "joined") {
+                var res1 = await channel1.join();
+              }
             channel1.on("messageAdded", (message) => {
                 console.log("-------11",message);
 
@@ -70,7 +77,10 @@ export default function UserList() {
 
             try {
                 const channel2 = await clientTest.getChannelByUniqueName(channelName2);
-                const res2 = await channel2.join();
+                console.log("22222222222222222222222222",channel2.channelState.status);
+                if (channel2.channelState.status !== "joined") {
+                    var res2 = await channel2.join();
+                  }
                 channel2.on("messageAdded", (message) => {
                     console.log("-------11",message);
                     const lastMessageAdd = messageTest.push(message);
