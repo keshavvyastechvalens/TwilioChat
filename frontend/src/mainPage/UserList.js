@@ -46,70 +46,105 @@ export default function UserList() {
 
     const joinChannel = async () => {
         clientTest.on("channelJoined", async (channel) => {
-            const messages = await channel.getMessages();
-            console.log(messages);
-            setMessageTest( messages.items || [] )
+            // const messages = await channel.getMessages();
+           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
+           
+           
+           
+           channel.getMessages().then(function(messages) {
+               const totalMessages = messages.items.length;
+               for (var i = 0; i < totalMessages; i++) {
+                   const message = messages.items[i];
+                   console.log('Author:' + message);
+                }
+                console.log('Total Messages:' + totalMessages);
+            });
+          
+           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
+           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
+           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
+           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
+           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
+
+            console.log(messageTest);
+
         });
         try {
+            console.log("before")
             const channel1 = await clientTest.getChannelByUniqueName(channelName1);
-            console.log("111111111111111111111",channel1.channelState.status);
-            
+            console.log("111111111111111111111", channel1.channelState.status);
+            console.log("1111111111111111111111111111111111111111111111111111111111111111");
+
             if (channel1.channelState.status !== "joined") {
-                var res1 = await channel1.join();
-              }
+            console.log("11222222222222222222222222222222222222222222222222222222222222");
+
+               var res1 = await channel1.join();
+            console.log("333333333333333333333333333333333333333333333333333333333333333");
+           setChannelTest(res1);
+            }
+
+            
+            console.log("114444444444444444444444444444444444444444444444444444444444444444444444444");
+
             channel1.on("messageAdded", (message) => {
-                console.log("-------11",message);
+            console.log("1555555555555555555555555");
+
+                console.log("-------11", message);
 
                 const lastMessageAdd = messageTest.push(message);
-                console.log("after pushing before inserting",lastMessageAdd);
+                console.log("after pushing before inserting", lastMessageAdd);
                 setMessageTest(
-                   lastMessageAdd
+                    lastMessageAdd
                 )
-                console.log("finalres",messageTest);
+                console.log("finalres", messageTest);
+            console.log("166666666666666666666666666");
             }
             );
-          
+            console.log("77777777777777777777777777777777777777777777");
 
-            setChannelTest(res1);
+          
+            console.log("88888888888888888888888888888888888888888888");
         }
         catch {
 
 
             try {
                 const channel2 = await clientTest.getChannelByUniqueName(channelName2);
-                console.log("22222222222222222222222222",channel2.channelState.status);
+                console.log("22222222222222222222222222", channel2.channelState.status);
                 if (channel2.channelState.status !== "joined") {
                     var res2 = await channel2.join();
-                  }
+                    setChannelTest(res2);
+                }
+                
                 channel2.on("messageAdded", (message) => {
-                    console.log("-------11",message);
+                    console.log("-------11", message);
                     const lastMessageAdd = messageTest.push(message);
-                console.log("after pushing before inserting",lastMessageAdd);
-                setMessageTest(
-                   lastMessageAdd
-                )
-                console.log("finalres",messageTest);
+                    console.log("after pushing before inserting", lastMessageAdd);
+                    setMessageTest(
+                        lastMessageAdd
+                    )
+                    console.log("finalres", messageTest);
 
                 }
                 );
-                setChannelTest(res2);
             }
             catch {
                 try {
+                    console.log("333333333333333333333333333----------------------------");
                     const channel3 = await clientTest.createChannel({
                         uniqueName: channelName1,
                         friendlyName: channelName1,
                     });
                     const res3 = await channel3.join();
                     channel3.on("messageAdded", (message) => {
-                    console.log("-------11",message);
-                        
+                        console.log("-------11", message);
+
                         const lastMessageAdd = messageTest.push(message);
-                        console.log("after pushing before inserting",lastMessageAdd);
+                        console.log("after pushing before inserting", lastMessageAdd);
                         setMessageTest(
-                           lastMessageAdd
+                            lastMessageAdd
                         )
-                        console.log("finalres",messageTest);
+                        console.log("finalres", messageTest);
                     });
 
                     setChannelTest(res3);
@@ -122,32 +157,6 @@ export default function UserList() {
 
     }
 
-
-
-
-
-    // function getIdOnClick(userData){
-
-    //     axios.get(`http://localhost:8989/chat/createConversation?receiverUserId=${userData.id}`, {
-    //         headers: { Authorization: localStorage.getItem("Authorization") }
-    //     }).then((res) => {
-    //         setUserData(res.data);
-    //         if(res.data.status===200 || res.data.status===409){
-    //             localStorage.setItem("conversationId",res.data.data.conversationId);
-    //         }
-
-    //     });
-
-
-    // }
-
-    // console.log("Receiver",userData.data.receiver.userName);
-    // console.log("Sender",userData.data.sender.userName);
-    // console.log(userData.data.receiver.userName+userData.data.sender.userName);
-    // const createChannel=userData
-    // console.log(userData.data.receiver.userName); //sender
-    // console.log(createChannel.data.sender.userName);
-    // console.log(userData.data.receiver.userName+userData.data.sender.userName);
 
 
     return <>
