@@ -11,13 +11,14 @@ function App() {
  
   const [channelTest, setChannelTest] = useState({}); 
   const [clientTest,setClientTest ] = useState({}); 
+  const [messageTest,setMessageTest] = useState([]);
 
  
  
   return (
 
     <>
-      <ChannelContext.Provider value={[channelTest, setChannelTest,clientTest,setClientTest]}>
+      <ChannelContext.Provider value={[channelTest, setChannelTest,clientTest,setClientTest,messageTest,setMessageTest]}>
       <Routes>
         <Route path='/signup' element={<SIgnUp />} />
         <Route exact path='signin' element={<SignIn />} />

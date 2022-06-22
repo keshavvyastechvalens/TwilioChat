@@ -137,9 +137,7 @@ export default function Dashboard() {
   const [message, setMessage] = useState([]);
   const [msg, setMsg] = useState("");
   const location = useLocation()
-  const [channelTest, setChannelTest,clientTest,setClientTest] = useContext(ChannelContext);
-
-  console.log(location.state.name.userName);
+  const [channelTest, setChannelTest,clientTest,setClientTest,messageTest,setMessageTest] = useContext(ChannelContext);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -150,7 +148,7 @@ export default function Dashboard() {
 
 
   const sendMessage = async () => {
-     const res=channelTest.sendMessage("msg");
+     const res=channelTest.sendMessage(msg);
      document.getElementById("standard-full-width").value = "";
   }
 

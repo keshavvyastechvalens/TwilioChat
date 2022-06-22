@@ -16,7 +16,7 @@ export default function UserList() {
     // const [userData, setUserData] = useState([])
 
     const data = useSelector((state) => state.allProducts.Product)
-    const [channelTest, setChannelTest,clientTest,setClientTest] = useContext(ChannelContext);
+    const [channelTest, setChannelTest, clientTest, setClientTest, messageTest, setMessageTest] = useContext(ChannelContext);
 
     var channelName1;
     var channelName2;
@@ -44,19 +44,44 @@ export default function UserList() {
     const joinChannel = async () => {
         clientTest.on("channelJoined", async (channel) => {
             const messages = await channel.getMessages();
-            console.log("messages");
+            console.log(messages);
+            setMessageTest( messages.items || [] )
         });
         try {
             const channel1 = await clientTest.getChannelByUniqueName(channelName1);
             const res1 = await channel1.join();
-            channel1.on("messageAdded", (message)=>console.log("unique------",message));
+            channel1.on("messageAdded", (message) => {
+                console.log("-------11",message);
+
+                const lastMessageAdd = messageTest.push(message);
+                console.log("after pushing before inserting",lastMessageAdd);
+                setMessageTest(
+                   lastMessageAdd
+                )
+                console.log("finalres",messageTest);
+            }
+            );
+          
+
             setChannelTest(res1);
         }
         catch {
+
+
             try {
                 const channel2 = await clientTest.getChannelByUniqueName(channelName2);
                 const res2 = await channel2.join();
-                channel2.on("messageAdded", (message)=>console.log("unique-----",message));
+                channel2.on("messageAdded", (message) => {
+                    console.log("-------11",message);
+                    const lastMessageAdd = messageTest.push(message);
+                console.log("after pushing before inserting",lastMessageAdd);
+                setMessageTest(
+                   lastMessageAdd
+                )
+                console.log("finalres",messageTest);
+
+                }
+                );
                 setChannelTest(res2);
             }
             catch {
@@ -66,7 +91,17 @@ export default function UserList() {
                         friendlyName: channelName1,
                     });
                     const res3 = await channel3.join();
-                    channel3.on("messageAdded", (message)=>console.log("unique----",message));
+                    channel3.on("messageAdded", (message) => {
+                    console.log("-------11",message);
+                        
+                        const lastMessageAdd = messageTest.push(message);
+                        console.log("after pushing before inserting",lastMessageAdd);
+                        setMessageTest(
+                           lastMessageAdd
+                        )
+                        console.log("finalres",messageTest);
+                    });
+
                     setChannelTest(res3);
 
                 } catch {
