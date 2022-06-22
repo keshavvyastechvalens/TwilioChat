@@ -50,15 +50,18 @@ export default function UserList() {
            console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
            
            
-           
-           channel.getMessages().then(function(messages) {
-               const totalMessages = messages.items.length;
-               for (var i = 0; i < totalMessages; i++) {
-                   const message = messages.items[i];
-                   console.log('Author:' + message);
-                }
-                console.log('Total Messages:' + totalMessages);
-            });
+
+          const res11= await channel.getMessages()
+          setMessageTest(res11.items)
+            console.log('res11---',res11.items);
+        //    channel.getMessages().then(function(messages) {
+        //        const totalMessages = messages.items.length;
+        //        for (var i = 0; i < totalMessages; i++) {
+        //            const message = messages.items[i];
+        //            console.log('Author:' + message);
+        //         }
+        //         console.log('Total Messages:' + totalMessages);
+        //     });
           
            console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
            console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
