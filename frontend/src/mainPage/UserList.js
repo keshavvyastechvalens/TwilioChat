@@ -47,31 +47,15 @@ export default function UserList() {
     const joinChannel = async () => {
         clientTest.on("channelJoined", async (channel) => {
             // const messages = await channel.getMessages();
-           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
-           
-           
-
-          const res11= await channel.getMessages()
-          setMessageTest(res11.items)
-            console.log('res11---',res11.items);
-        //    channel.getMessages().then(function(messages) {
-        //        const totalMessages = messages.items.length;
-        //        for (var i = 0; i < totalMessages; i++) {
-        //            const message = messages.items[i];
-        //            console.log('Author:' + message);
-        //         }
-        //         console.log('Total Messages:' + totalMessages);
-        //     });
-          
-           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
-           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
-           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
-           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
-           console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
-
-            console.log(messageTest);
-
+            console.log("--------*-*-*-*-*-*-*--*-*-**---*-*-*-*--*-*--*-");
+            const res11 = await channel.getMessages()
+            setMessageTest(res11.items)
+            console.log("res11-**-*-*--*", res11);
+            console.log('res11items---*-*-*-*', res11.items);
+            console.log("inside channel joined", messageTest);
         });
+        console.log("outside channel joined", messageTest);
+
         try {
             console.log("before")
             const channel1 = await clientTest.getChannelByUniqueName(channelName1);
@@ -79,33 +63,26 @@ export default function UserList() {
             console.log("1111111111111111111111111111111111111111111111111111111111111111");
 
             if (channel1.channelState.status !== "joined") {
-            console.log("11222222222222222222222222222222222222222222222222222222222222");
-
-               var res1 = await channel1.join();
-            console.log("333333333333333333333333333333333333333333333333333333333333333");
-           setChannelTest(res1);
+                console.log("11222222222222222222222222222222222222222222222222222222222222");
+                var res1 = await channel1.join();
+                console.log("333333333333333333333333333333333333333333333333333333333333333");
+                setChannelTest(res1);
             }
 
-            
+
             console.log("114444444444444444444444444444444444444444444444444444444444444444444444444");
 
             channel1.on("messageAdded", (message) => {
-            console.log("1555555555555555555555555");
-
+                console.log("1555555555555555555555555");
                 console.log("-------11", message);
-
-                const lastMessageAdd = messageTest.push(message);
-                console.log("after pushing before inserting", lastMessageAdd);
-                setMessageTest(
-                    lastMessageAdd
-                )
+                setMessageTest(messageTest => [...messageTest, message]);
                 console.log("finalres", messageTest);
-            console.log("166666666666666666666666666");
+                console.log("166666666666666666666666666");
             }
             );
             console.log("77777777777777777777777777777777777777777777");
 
-          
+
             console.log("88888888888888888888888888888888888888888888");
         }
         catch {
@@ -118,15 +95,12 @@ export default function UserList() {
                     var res2 = await channel2.join();
                     setChannelTest(res2);
                 }
-                
+
                 channel2.on("messageAdded", (message) => {
                     console.log("-------11", message);
-                    const lastMessageAdd = messageTest.push(message);
-                    console.log("after pushing before inserting", lastMessageAdd);
-                    setMessageTest(
-                        lastMessageAdd
-                    )
-                    console.log("finalres", messageTest);
+
+
+                    setMessageTest(messageTest => [...messageTest, message]);
 
                 }
                 );
@@ -139,18 +113,12 @@ export default function UserList() {
                         friendlyName: channelName1,
                     });
                     const res3 = await channel3.join();
+                    setChannelTest(res3);
                     channel3.on("messageAdded", (message) => {
                         console.log("-------11", message);
-
-                        const lastMessageAdd = messageTest.push(message);
-                        console.log("after pushing before inserting", lastMessageAdd);
-                        setMessageTest(
-                            lastMessageAdd
-                        )
+                        setMessageTest(messageTest => [...messageTest, message]);
                         console.log("finalres", messageTest);
                     });
-
-                    setChannelTest(res3);
 
                 } catch {
                     throw new Error("unable to create channel, please reload this page");

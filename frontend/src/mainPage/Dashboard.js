@@ -148,7 +148,7 @@ export default function Dashboard() {
 
 
   const sendMessage = async () => {
-     const res=channelTest.sendMessage(msg);
+     const res=await channelTest.sendMessage(msg);
      document.getElementById("standard-full-width").value = "";
   }
 
