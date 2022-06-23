@@ -21,7 +21,7 @@ function App() {
       <ChannelContext.Provider value={[channelTest, setChannelTest,clientTest,setClientTest,messageTest,setMessageTest]}>
       <Routes>
         <Route path='/signup' element={<SIgnUp />} />
-        <Route exact path='signin' element={<SignIn />} />
+        <Route exact path='/' element={<SignIn />} />
         <Route exact path='dashboard' element={<Dashboard />} />
       </Routes>
       </ChannelContext.Provider>

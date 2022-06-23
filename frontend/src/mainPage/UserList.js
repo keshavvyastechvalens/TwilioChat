@@ -22,12 +22,16 @@ export default function UserList() {
     var channelTestName2;
     var channelName1;
     var channelName2;
-    
+
     function getIdOnClick(user) {
         channelTestName2 = user.userName.concat(localStorage.getItem("login_name"));
         channelTestName1 = localStorage.getItem("login_name") + user.userName;
         channelName1 = channelTestName1.toLowerCase();
         channelName2 = channelTestName2.toLowerCase();
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",channelName1);
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",channelName2);
+
+
 
         clientTest.on("tokenAboutToExpire", async () => {
             const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
@@ -70,6 +74,11 @@ export default function UserList() {
                 console.log("333333333333333333333333333333333333333333333333333333333333333");
                 setChannelTest(res1);
             }
+            else {
+                const res11 = await channel1.getMessages()
+                setMessageTest(res11.items)
+            }
+
 
 
             console.log("114444444444444444444444444444444444444444444444444444444444444444444444444");
@@ -97,7 +106,10 @@ export default function UserList() {
                     var res2 = await channel2.join();
                     setChannelTest(res2);
                 }
-
+                else {
+                    const res11 = await channel2.getMessages()
+                    setMessageTest(res11.items)
+                }
                 channel2.on("messageAdded", (message) => {
                     console.log("-------11", message);
 
