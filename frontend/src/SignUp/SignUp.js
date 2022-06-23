@@ -84,6 +84,8 @@ export default function SIgnUp() {
         // )
         // const response= await api.post("localhost:8989/user/registeruser")
         // console.log('response',response);
+
+        // to create/register the new user in backend
         const res = await axios.post("http://localhost:8989/user/registeruser",values);
           console.log(res);
           if(res.data.status==200)

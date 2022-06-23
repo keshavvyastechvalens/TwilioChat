@@ -21,11 +21,14 @@ export default function SignIn() {
     userName:'',
     password:'',
   
-}               
+}      
+//function will execute after submit for login happens         
 const onSubmit=async values=>{
     
-  
+ 
   dispatch(setProduct("res.data.data.userList111111"))
+
+  // api for login
    const res = await axios.post("http://localhost:8989/user/login",values);
   
    if(res.data.status===200)
@@ -34,7 +37,7 @@ const onSubmit=async values=>{
 console.log("name cahnged*********************************************************************************");
     localStorage.setItem("Authorization",res.data.data.token);
     navigate('/dashboard',{state:{name:res.data.data}})
-  
+  //responsible for sending the value to other component
     dispatch(setProduct(res.data.data.userList))
 
     

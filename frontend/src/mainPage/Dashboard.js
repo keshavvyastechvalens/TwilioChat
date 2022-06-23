@@ -136,7 +136,7 @@ export default function Dashboard() {
     setOpen(false);
   };
 
-
+// responsible for sending the new message to the respective user
   const sendMessage = async () => {
     console.log("test");
      const res = await channelTest.sendMessage(msg);
@@ -147,20 +147,20 @@ export default function Dashboard() {
   }
 
 
-
+//responsible for to create the client
   const createClient = async () => {
 
     const token = localStorage.getItem("twilio_access_token")
     const client = await Chat.Client.create(token);
     setClientTest(client);
   }
-
+//get new token from the backend
   const getToken = async () => {
     const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
     localStorage.setItem("twilio_access_token", response.data)
   }
 
-
+//this will execute after every render
   useEffect(() => {
     getToken()
     createClient()
@@ -170,6 +170,7 @@ export default function Dashboard() {
 
   console.log("messageTest---",messageTest);
 
+ 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
@@ -254,7 +255,7 @@ export default function Dashboard() {
     shrink: true,
   }}
 />
-
+{/* this will trigger the sendMessage function for sending the new message to the user */}
 <button onClick={() => sendMessage()}><SendIcon  />  </button>
 </div>
             </Grid>
