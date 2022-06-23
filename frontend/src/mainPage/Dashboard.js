@@ -165,12 +165,13 @@ export default function Dashboard() {
 
 
   console.log("messageTest---",messageTest);
-  {
-    messageTest.map((e)=>
-    {
-      console.log(e.state.body);
-    })
-  }
+
+  // {
+  //   messageTest.map((e)=>
+  //   {
+  //     console.log(e.state.body);
+  //   })
+  // }
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
@@ -228,12 +229,14 @@ export default function Dashboard() {
                 {messageTest.map((textMessage) => (
                   <List key={textMessage.state.sid}>
                     <ListItem>
-                      <ListItemAvatar>
-                        <Avatar style={{ textTransform: 'capitalize' }} alt={textMessage.author} src="logo.jpg" >
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText primary={textMessage.state.body} />
-                    </ListItem>,
+                     
+                      <Badge badgeContent={textMessage.state.author} color="secondary"/>
+                      
+                      
+                      <ListItemText  style={{marginLeft:'25px'}}>
+                     <p style={{fontSize:'21px'}}> {textMessage.state.body}</p>
+                      </ListItemText>
+                    </ListItem>
                   </List>
                 ))}
                 </div>

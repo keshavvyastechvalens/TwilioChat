@@ -22,6 +22,7 @@ export default function UserList() {
     var channelTestName2;
     var channelName1;
     var channelName2;
+    
     function getIdOnClick(user) {
         channelTestName2 = user.userName.concat(localStorage.getItem("login_name"));
         channelTestName1 = localStorage.getItem("login_name") + user.userName;
@@ -39,6 +40,7 @@ export default function UserList() {
             localStorage.setItem("twilio_access_token", response.data)
             clientTest.updateToken(response.data);
         });
+
         joinChannel();
 
     }
@@ -132,7 +134,7 @@ export default function UserList() {
 
     return <>
         {data.map((user) => (
-            <ListItem button key={user.id} onClick={() => getIdOnClick(user)}  >
+            <ListItem id="button" button key={user.id} onClick={() => getIdOnClick(user)}  >
                 <ListItemIcon>
                     <Avatar style={{ textTransform: 'capitalize' }} alt={user.firstName} src="logo.jpg" />
                 </ListItemIcon>
