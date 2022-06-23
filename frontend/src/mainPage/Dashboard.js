@@ -120,16 +120,6 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-
-
-
-
-
-
-
-
-
-
 export default function Dashboard() {
   const dispatch = useDispatch()
   const classes = useStyles();
@@ -175,6 +165,13 @@ export default function Dashboard() {
 
 
   console.log("messageTest---",messageTest);
+
+  // {
+  //   messageTest.map((e)=>
+  //   {
+  //     console.log(e.state.body);
+  //   })
+  // }
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
@@ -228,35 +225,40 @@ export default function Dashboard() {
             <Grid item xs={12} >
 
               <Paper style={{ height: '80vh' }} className={fixedHeightPaper}>
-                {message.map((textMessage) => (
-                  <List key={textMessage.sid}>
+                <div>
+                {messageTest.map((textMessage) => (
+                  <List key={textMessage.state.sid}>
                     <ListItem>
-                      <ListItemAvatar>
-                        <Avatar style={{ textTransform: 'capitalize' }} alt={textMessage.author} src="logo.jpg" >
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText primary={textMessage.body} />
-                    </ListItem>,
+                     
+                      <Badge badgeContent={textMessage.state.author} color="secondary"/>
+                      
+                      
+                      <ListItemText  style={{marginLeft:'25px'}}>
+                     <p style={{fontSize:'21px'}}> {textMessage.state.body}</p>
+                      </ListItemText>
+                    </ListItem>
                   </List>
                 ))}
-                <div style={{ display: 'flex' }}>
-
-                  <TextField
-                    id="standard-full-width"
-                    onChange={(event)=>setMsg(event.target.value)}
-                    value={msg}
-                    style={{ margin: 8 }}
-                    placeholder="Message"
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-
-                  <button><SendIcon onClick={() => sendMessage()} />  </button>
                 </div>
+               
               </Paper>
+              <div style={{ display: 'flex' }}>
+
+<TextField
+  id="standard-full-width"
+  onChange={(event)=>setMsg(event.target.value)}
+  value={msg}
+  style={{ margin: 8 }}
+  placeholder="Message"
+  fullWidth
+  margin="normal"
+  InputLabelProps={{
+    shrink: true,
+  }}
+/>
+
+<button onClick={() => sendMessage()}><SendIcon  />  </button>
+</div>
             </Grid>
           </Grid>
           <Box pt={4}>
