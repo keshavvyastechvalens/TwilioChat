@@ -138,6 +138,7 @@ export default function Dashboard() {
 
 
   const sendMessage = async () => {
+    console.log("test");
      const res = await channelTest.sendMessage(msg);
      console.log("channel--------==============",channelTest);
 
@@ -169,12 +170,6 @@ export default function Dashboard() {
 
   console.log("messageTest---",messageTest);
 
-  // {
-  //   messageTest.map((e)=>
-  //   {
-  //     console.log(e.state.body);
-  //   })
-  // }
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
