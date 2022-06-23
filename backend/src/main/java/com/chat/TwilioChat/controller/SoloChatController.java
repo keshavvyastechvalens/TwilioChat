@@ -30,7 +30,7 @@ public class SoloChatController {
 	
 	@Autowired
 	UsersRepository usersRepository;
-	
+	//this will create a new conversation
 	@GetMapping("/createConversation")
 	public RestResponse createConversation(@RequestParam("receiverUserId") long receiverUserId, HttpServletRequest req)
 	{
@@ -44,7 +44,7 @@ public class SoloChatController {
 		}
 	}
 	
-	
+	//responsible to send a message to a conversation
 	@PostMapping("/sendMessage")
 	public RestResponse sendMessage(@Valid @RequestBody MessageDto messageDto, BindingResult result,HttpServletRequest req)
 	{
@@ -71,7 +71,7 @@ public class SoloChatController {
 	//MBffada358732f4183a3ee2e9afdea53f9
 	
 	
-	
+	//fetching message from the conversation
 	@GetMapping("/fetchMessage")
 	public RestResponse fetchMessage(@RequestParam("conversationId") String conversationId,HttpServletRequest req)
 	{
@@ -83,6 +83,7 @@ public class SoloChatController {
 		}
 	}
 	
+	//getting the token
 	@GetMapping("/token")
 	public String getToken(HttpServletRequest req)
 	{

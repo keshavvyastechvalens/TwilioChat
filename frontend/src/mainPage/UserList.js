@@ -11,7 +11,7 @@ import { ChannelContext } from '../App';
 
 
 
-
+//show the userlist in chat window
 export default function UserList() {
     // const [userData, setUserData] = useState([])
 
@@ -23,6 +23,7 @@ export default function UserList() {
     var channelName1;
     var channelName2;
 
+//execute this function onClicking the user for chat after login
     function getIdOnClick(user) {
         channelTestName2 = user.userName.concat(localStorage.getItem("login_name"));
         channelTestName1 = localStorage.getItem("login_name") + user.userName;
@@ -32,13 +33,14 @@ export default function UserList() {
         console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",channelName2);
 
 
-
+        //if token is about to expire
         clientTest.on("tokenAboutToExpire", async () => {
             const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
             localStorage.setItem("twilio_access_token", response.data)
             clientTest.updateToken(response.data);
         });
 
+        //run if token get expired
         clientTest.on("tokenExpired", async () => {
             const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
             localStorage.setItem("twilio_access_token", response.data)
@@ -49,7 +51,7 @@ export default function UserList() {
 
     }
 
-
+    //execute joinchannel when user create a channel with chat user
     const joinChannel = async () => {
         clientTest.on("channelJoined", async (channel) => {
             // const messages = await channel.getMessages();
@@ -64,6 +66,7 @@ export default function UserList() {
 
         try {
             console.log("before")
+            //this will check if loggedIn user already have channel
             const channel1 = await clientTest.getChannelByUniqueName(channelName1);
             console.log("111111111111111111111", channel1.channelState.status);
             console.log("1111111111111111111111111111111111111111111111111111111111111111");
@@ -100,6 +103,7 @@ export default function UserList() {
 
 
             try {
+                //this check if user already in channel from receiver side
                 const channel2 = await clientTest.getChannelByUniqueName(channelName2);
                 console.log("22222222222222222222222222", channel2.channelState.status);
                 if (channel2.channelState.status !== "joined") {
@@ -113,7 +117,7 @@ export default function UserList() {
                 channel2.on("messageAdded", (message) => {
                     console.log("-------11", message);
 
-
+                    //append the new message to this list
                     setMessageTest(messageTest => [...messageTest, message]);
 
                 }
@@ -122,11 +126,13 @@ export default function UserList() {
             catch {
                 try {
                     console.log("333333333333333333333333333----------------------------");
+                    //this create the channel if user don't have an existing channel
                     const channel3 = await clientTest.createChannel({
                         uniqueName: channelName1,
                         friendlyName: channelName1,
                     });
                     const res3 = await channel3.join();
+                    //set the channel
                     setChannelTest(res3);
                     channel3.on("messageAdded", (message) => {
                         console.log("-------11", message);
@@ -145,6 +151,7 @@ export default function UserList() {
 
 
     return <>
+    {/* this is responsible for showing the userList on left panel. */}
         {data.map((user) => (
             <ListItem id="button" button key={user.id} onClick={() => getIdOnClick(user)}  >
                 <ListItemIcon>
