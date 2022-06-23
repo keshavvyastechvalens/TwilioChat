@@ -20,13 +20,14 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import ListItemText from '@material-ui/core/ListItemText';
 import Copyright from './Copyright';
 import axios from 'axios';
-import { Avatar, ListItem, ListItemAvatar, ListItemIcon, TextField } from '@material-ui/core';
+import { Avatar, Button, ListItem, ListItemAvatar, ListItemIcon, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import UserList from './UserList';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { setClient } from '../Redux/Action/Action';
 import { ChannelContext } from '../App';
+import {useNavigate} from 'react-router-dom'
 const Chat = require("twilio-chat");
 
 
@@ -127,7 +128,9 @@ export default function Dashboard() {
   const [message, setMessage] = useState([]);
   const [msg, setMsg] = useState("");
   const location = useLocation()
-  const [channelTest, setChannelTest,clientTest,setClientTest,messageTest,setMessageTest] = useContext(ChannelContext);
+  const [channelTest, setChannelTest, clientTest, setClientTest, messageTest, setMessageTest] = useContext(ChannelContext);
+  const navigate=useNavigate()
+ 
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -136,31 +139,45 @@ export default function Dashboard() {
     setOpen(false);
   };
 
-// responsible for sending the new message to the respective user
+
+  const logout=async values=>{
+    
+    const res = await axios.delete("http://localhost:8989/user/logout", { headers: { "Authorization": localStorage.getItem("Authorization") } })  
+    if(res.status===200)
+    {   
+       localStorage.clear();
+      navigate('/signin')
+    }
+
+  }
+  
+
+
+  // responsible for sending the new message to the respective user
   const sendMessage = async () => {
     console.log("test");
-     const res = await channelTest.sendMessage(msg);
-     console.log("channel--------==============",channelTest);
+    const res = await channelTest.sendMessage(msg);
+    console.log("channel--------==============", channelTest);
 
-     console.log("res--------==============",res);
-     document.getElementById("standard-full-width").value = "";
+    console.log("res--------==============", res);
+    document.getElementById("standard-full-width").value = "";
   }
 
 
-//responsible for to create the client
+  //responsible for to create the client
   const createClient = async () => {
 
     const token = localStorage.getItem("twilio_access_token")
     const client = await Chat.Client.create(token);
     setClientTest(client);
   }
-//get new token from the backend
+  //get new token from the backend
   const getToken = async () => {
     const response = await axios.get("http://localhost:8989/chat/token", { headers: { "Authorization": localStorage.getItem("Authorization") } })
     localStorage.setItem("twilio_access_token", response.data)
   }
 
-//this will execute after every render
+  //this will execute after every render
   useEffect(() => {
     getToken()
     createClient()
@@ -168,9 +185,9 @@ export default function Dashboard() {
 
 
 
-  console.log("messageTest---",messageTest);
+  console.log("messageTest---", messageTest);
 
- 
+
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
@@ -191,9 +208,11 @@ export default function Dashboard() {
             {location.state.name.userName}
           </Typography>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
+            
+              <Button fullWidth type="button" variant="contained" color="primary" onClick={() => logout()}>
+                Logout
+              </Button>
+    
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -225,39 +244,39 @@ export default function Dashboard() {
 
               <Paper style={{ height: '80vh' }} className={fixedHeightPaper}>
                 <div>
-                {messageTest.map((textMessage) => (
-                  <List key={textMessage.state.sid}>
-                    <ListItem>
-                     
-                      <Badge badgeContent={textMessage.state.author} color="secondary"/>
-                      
-                      
-                      <ListItemText  style={{marginLeft:'25px'}}>
-                     <p style={{fontSize:'21px'}}> {textMessage.state.body}</p>
-                      </ListItemText>
-                    </ListItem>
-                  </List>
-                ))}
+                  {messageTest.map((textMessage) => (
+                    <List key={textMessage.state.sid}>
+                      <ListItem>
+
+                        <Badge badgeContent={textMessage.state.author} color="secondary" />
+
+
+                        <ListItemText style={{ marginLeft: '25px' }}>
+                          <p style={{ fontSize: '21px' }}> {textMessage.state.body}</p>
+                        </ListItemText>
+                      </ListItem>
+                    </List>
+                  ))}
                 </div>
-               
+
               </Paper>
               <div style={{ display: 'flex' }}>
 
-<TextField
-  id="standard-full-width"
-  onChange={(event)=>setMsg(event.target.value)}
-  value={msg}
-  style={{ margin: 8 }}
-  placeholder="Message"
-  fullWidth
-  margin="normal"
-  InputLabelProps={{
-    shrink: true,
-  }}
-/>
-{/* this will trigger the sendMessage function for sending the new message to the user */}
-<button onClick={() => sendMessage()}><SendIcon  />  </button>
-</div>
+                <TextField
+                  id="standard-full-width"
+                  onChange={(event) => setMsg(event.target.value)}
+                  value={msg}
+                  style={{ margin: 8 }}
+                  placeholder="Message"
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                {/* this will trigger the sendMessage function for sending the new message to the user */}
+                <button onClick={() => sendMessage()}><SendIcon />  </button>
+              </div>
             </Grid>
           </Grid>
           <Box pt={4}>
